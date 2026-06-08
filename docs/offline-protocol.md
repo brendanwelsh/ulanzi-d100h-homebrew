@@ -21,6 +21,35 @@ the device (see [ulanzi-studio.md](ulanzi-studio.md)).
 Per the official manual, the standalone presets are: *Previous, Play/Pause, Next, Knob, Paste, Copy,
 Undo, Redo* — which matches the above (3 media buttons + 4 editing shortcuts + the volume knob).
 
+## Physical layout & what the side buttons do (offline)
+The D100H has **7 keys arranged around the dial** — 3 across the top, and 4 on the sides (2 left,
+2 right) — plus the dial in the middle:
+
+![D100H default offline layout](images/d100h-layout.svg)
+
+```text
+        [ Prev ]  [ Play/Pause ]  [ Next ]      top 3 = media transport (HID-readable)
+
+   [ Copy ]                              [ Paste ]
+   [ Undo ]           ( DIAL )           [ Redo ]    4 side keys = editing shortcuts (NOT readable)
+                rotate = vol ± / press = mute
+```
+
+**Offline, the four side buttons are editing shortcuts:** they emit `Ctrl+C` (Copy), `Ctrl+V` (Paste),
+`Ctrl+Z` (Undo), and `Ctrl+Y` (Redo). So with Ulanzi Studio closed, pressing a side button simply
+copies / pastes / undoes / redoes in whatever application currently has focus. Consequences:
+- They are **not configurable** offline (the D100H has no custom standalone layout — see
+  [ulanzi-studio.md](ulanzi-studio.md)).
+- They ride the system **Keyboard** HID interface, so they are **invisible to `node-hid`** on Windows:
+  you can't read them, and you can't safely repurpose Ctrl+C/V/Z/Y anyway.
+
+The **top three keys** are media transport (Previous / Play-Pause / Next) on the **Consumer** interface,
+which *is* readable — those are the only buttons a HID-only homebrew can actually use.
+
+> The grouping (top = media, sides = editing) is the standard arrangement and matches the default preset
+> list. The exact key-to-position mapping can vary, so confirm on your own unit: open Notepad and press
+> each key — the editing keys visibly copy/paste/undo/redo; the media keys won't type anything.
+
 ## Consumer Control report format
 Reports on the Consumer interface (`usagePage 0x0c`) are 3 bytes — a report id, then a little-endian
 16-bit usage code:

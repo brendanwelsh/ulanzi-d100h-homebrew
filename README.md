@@ -4,6 +4,8 @@
 > actually works at the HID level, how Ulanzi Studio stores its config, and the gotchas you'll hit
 > building your own integration. Unofficial; gathered by poking at a real unit on Windows 11.
 
+![Ulanzi D100H default (offline) layout](docs/images/d100h-layout.svg)
+
 ## Why this exists
 The D100H is a cheap, genuinely nice Bluetooth dial + 7-button macro pad. If you want to drive *your
 own* software with it instead of Ulanzi Studio's built-in presets, you run into a wall of undocumented
