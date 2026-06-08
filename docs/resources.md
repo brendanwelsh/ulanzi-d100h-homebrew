@@ -3,6 +3,7 @@
 ## Official (Ulanzi)
 - **Product page:** https://www.ulanzi.com/products/d100h-dial-creative-controller-i003
 - **User manual:** https://manuals.plus/ulanzi/d100h-dial-creative-controller-manual
+- **Docs & user-guide hub:** https://www.ulanzi.com/pages/documentation
 - **Downloads / firmware / Ulanzi Studio:** https://www.ulanzi.com/pages/downloads
 - **Community forum** (Discuz; has a D100H FAQ thread): https://bbs.ulanzistudio.com/
 

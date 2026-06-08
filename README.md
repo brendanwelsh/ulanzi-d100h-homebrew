@@ -6,6 +6,17 @@
 
 ![Ulanzi D100H default (offline) layout](docs/images/d100h-layout.svg)
 
+## The device & official links
+- 🛒 **Ulanzi D100H Dial Creative Controller** — product page / specs / where to buy:
+  https://www.ulanzi.com/products/d100h-dial-creative-controller-i003
+- 📄 **Manual:** https://manuals.plus/ulanzi/d100h-dial-creative-controller-manual
+- 📚 **Ulanzi docs & user guides:** https://www.ulanzi.com/pages/documentation
+- ⬇️ **Ulanzi Studio app + firmware downloads:** https://www.ulanzi.com/pages/downloads
+- 💬 **Community forum** (has a D100H FAQ thread): https://bbs.ulanzistudio.com/
+- 🧩 **UlanziDeck plugin SDK:** https://github.com/UlanziTechnology/UlanziDeckPlugin-SDK
+
+More — including the related D200 reverse-engineering projects — in [docs/resources.md](docs/resources.md).
+
 ## Why this exists
 The D100H is a cheap, genuinely nice Bluetooth dial + 7-button macro pad. If you want to drive *your
 own* software with it instead of Ulanzi Studio's built-in presets, you run into a wall of undocumented
