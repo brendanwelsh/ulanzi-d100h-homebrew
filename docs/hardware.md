@@ -1,7 +1,7 @@
 # Hardware & HID enumeration
 
 ## Device
-- **Ulanzi D100H Dial Creative Controller** — Bluetooth 5.x, built-in rechargeable battery.
+- **Ulanzi D100H Dial Creative Controller** — Bluetooth Low Energy **5.1** (advertised name "UlanziDial"), 1000 mAh battery. Full specs + official diagram: **[specs.md](specs.md)**.
 - 1 stepless dial (rotate + press, with haptics) + 7 RGB keys.
 - Pairs to up to 3 hosts at once; a switch on the underside cycles the paired device.
 - **USB-C is charge-only — there is no wired data mode.** It talks to the host purely as a Bluetooth

@@ -6,6 +6,8 @@
 
 ![Ulanzi D100H default (offline) layout](docs/images/d100h-layout.svg)
 
+_Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
+
 ## The device & official links
 - 🛒 **Ulanzi D100H Dial Creative Controller** — product page / specs / where to buy:
   https://www.ulanzi.com/products/d100h-dial-creative-controller-i003

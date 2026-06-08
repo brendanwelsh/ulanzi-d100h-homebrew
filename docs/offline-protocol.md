@@ -30,8 +30,8 @@ The D100H has **7 keys arranged around the dial** — 3 across the top, and 4 on
 ```text
         [ Prev ]  [ Play/Pause ]  [ Next ]      top 3 = media transport (HID-readable)
 
-   [ Copy ]                              [ Paste ]
-   [ Undo ]           ( DIAL )           [ Redo ]    4 side keys = editing shortcuts (NOT readable)
+   [ Paste ]                            [ Redo ]
+   [ Copy ]            ( DIAL )         [ Undo ]    4 side keys = editing shortcuts (NOT readable)
                 rotate = vol ± / press = mute
 ```
 
@@ -46,9 +46,9 @@ copies / pastes / undoes / redoes in whatever application currently has focus. C
 The **top three keys** are media transport (Previous / Play-Pause / Next) on the **Consumer** interface,
 which *is* readable — those are the only buttons a HID-only homebrew can actually use.
 
-> The grouping (top = media, sides = editing) is the standard arrangement and matches the default preset
-> list. The exact key-to-position mapping can vary, so confirm on your own unit: open Notepad and press
-> each key — the editing keys visibly copy/paste/undo/redo; the media keys won't type anything.
+> This layout and the per-key functions are **confirmed by the official Ulanzi D100H manual** (see
+> [specs.md](specs.md) for the official diagram): top = Prev / Play-Pause / Next; left = Paste (top) /
+> Copy (bottom); right = Redo (top) / Undo (bottom); dial = volume / mute.
 
 ## Consumer Control report format
 Reports on the Consumer interface (`usagePage 0x0c`) are 3 bytes — a report id, then a little-endian
