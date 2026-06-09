@@ -15,6 +15,10 @@
 - **HTML / Property-Inspector library:** https://github.com/UlanziTechnology/plugin-common-html
 - Built on the "Ulanzi JS Plugin Development Protocol" (v2.1.x at time of writing). The `manifest.md`
   in the SDK repo is the authoritative field reference.
+- **Plugin marketplace / Workshop** — browse every published plugin (the best way to see what exists
+  today and what's possible), and where finished plugins are distributed: https://ugc.ulanzistudio.com/home/1
+- **Submit a plugin / dev inquiries:** `service@ulanzi.com`. The SDK is Apache-2.0, so you may build and
+  distribute plugins (including commercial / closed-source).
 
 ## Related reverse-engineering (other Ulanzi devices)
 Most existing open-source work targets the **D200**, not the D100H — but it's a useful reference:
