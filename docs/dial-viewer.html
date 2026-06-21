@@ -20,8 +20,8 @@
   button.btn:hover { border-color:var(--accent); }
   input.url { background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:inherit; width:210px; }
   #status { text-align:center; color:var(--mut); min-height:20px; }
-  .stage { display:flex; justify-content:center; padding:8px 12px 24px; }
-  .dial-device { position:relative; width:340px; max-width:88vw; line-height:0; user-select:none; }
+  .stage { display:flex; justify-content:center; padding:34px 24px 22px; }
+  .dial-device { position:relative; width:340px; max-width:min(340px,72vw); line-height:0; user-select:none; }
   .dial-img { width:100%; height:auto; display:block; -webkit-user-drag:none; filter:drop-shadow(0 18px 30px rgba(0,0,0,.5)); }
   .dwhite { position:absolute; inset:0; width:100%; height:auto; opacity:0; pointer-events:none; transition:opacity .04s ease; filter:drop-shadow(0 0 8px rgba(255,255,255,.7)); }
   .dwhite.on { opacity:1; }
@@ -35,6 +35,16 @@
   footer { max-width:680px; margin:0 auto; padding:0 18px 40px; color:var(--mut); font-size:13px; }
   footer code { background:var(--chip); padding:1px 5px; border-radius:4px; }
   a { color:var(--accent); }
+  .panel { max-width:560px; margin:6px auto 12px; padding:0 18px; }
+  .panel .head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:var(--mut); font-size:12px; margin-bottom:4px; }
+  #log { background:var(--chip); border:1px solid var(--line); border-radius:8px; padding:8px 10px; height:148px; overflow:auto;
+         font:12px/1.55 ui-monospace,Menlo,Consolas,monospace; white-space:pre-wrap; }
+  #log .m { color:var(--mut); } #log .u { color:var(--accent); }
+  @media (max-width:560px){
+    .dial-device { max-width:56vw; }
+    .dlabel { font-size:10px; padding:2px 5px; }
+    input.url { width:150px; }
+  }
 </style>
 </head>
 <body>
@@ -51,6 +61,12 @@
 <div id="status">Not connected — works with mouse/keyboard right now.</div>
 
 <div class="stage"><div class="dial-device" id="device"></div></div>
+
+<div class="panel">
+  <div class="head"><span>Event log — connect, then press/turn each control; paste this to me to map keys</span>
+    <button class="btn" id="clear" style="padding:4px 10px">Clear</button></div>
+  <div id="log"><div class="m">waiting for input…</div></div>
+</div>
 
 <footer>
   <p><b>Connect dial (WebHID)</b> reads the real D100H directly — turn the physical knob and this one spins.
@@ -114,6 +130,16 @@ addEventListener('keydown',e=>{ const n=parseInt(e.key,10); if(n>=1&&n<=7) flash
 
 const status = t => document.getElementById('status').textContent = t;
 
+const logEl = document.getElementById('log');
+function logEvent(src, hex, act){
+  if(logEl.firstElementChild && logEl.firstElementChild.className==='m') logEl.textContent='';
+  const d=document.createElement('div');
+  d.innerHTML=`<span class="m">${src}</span>  ${hex}  <span class="u">${act}</span>`;
+  logEl.prepend(d);
+  while(logEl.childElementCount>40) logEl.lastElementChild.remove();
+}
+document.getElementById('clear').onclick = ()=>{ logEl.innerHTML='<div class="m">cleared</div>'; };
+
 // ---- WebHID: read the real dial ----
 document.getElementById('hid').onclick = async () => {
   if(!('hid' in navigator)) return status('WebHID not supported — use Chrome or Edge.');
@@ -126,12 +152,17 @@ document.getElementById('hid').onclick = async () => {
       // frame = [reportId, usageLow, usageHigh]; decode like the docs: code = bytes[1] | bytes[2]<<8
       const b=[e.reportId]; for(let i=0;i<e.data.byteLength;i++) b.push(e.data.getUint8(i));
       const code = (b[1]||0) | ((b[2]||0)<<8);
-      if(code===0xE9) spin(16);          // volume up  = rotate CW
-      else if(code===0xEA) spin(-16);    // volume down= rotate CCW
-      else if(code===0xE2) press();      // mute       = knob press
-      else if(code===0xB6) flash(2);     // prev
-      else if(code===0xCD) flash(3);     // play/pause
-      else if(code===0xB5) flash(4);     // next
+      const hex = b.map(x=>x.toString(16).padStart(2,'0')).join(' ');
+      let act;
+      if(code===0xE9){ act='rotate CW (vol+)'; spin(16); }
+      else if(code===0xEA){ act='rotate CCW (vol-)'; spin(-16); }
+      else if(code===0xE2){ act='press (mute)'; press(); }
+      else if(code===0xB6){ act='Prev'; flash(2); }
+      else if(code===0xCD){ act='Play/Pause'; flash(3); }
+      else if(code===0xB5){ act='Next'; flash(4); }
+      else if(code===0){ act='release'; }
+      else act='?? unmapped 0x'+code.toString(16);
+      logEvent('HID r'+e.reportId, hex, act);
     });
   } catch(err){ status('Connect failed: '+err.message); }
 };
@@ -147,6 +178,7 @@ document.getElementById('ws').onclick = () => {
   ws.onclose= ()=>status('Plugin bridge closed.');
   ws.onerror= ()=>status('WebSocket error — is the plugin running?');
   ws.onmessage = e => { let m; try{m=JSON.parse(e.data);}catch{return;}
+    logEvent('WS', String(e.data).slice(0,52), m.type||'?');
     if(m.type==='rotate') spin((m.dir<0?-1:1)*16);
     else if(m.type==='press') press();
     else if(m.type==='button'){ const i=KEYMAP[m.key]; if(i!=null) flash(i); }
