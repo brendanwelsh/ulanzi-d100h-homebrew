@@ -1,0 +1,157 @@
+<!doctype html>
+<!-- Interactive on-screen Ulanzi D100H — gamepadviewer-style.
+     Drag the knob to spin, click keys (or press 1-7) to light them.
+     "Connect dial" reads the REAL D100H over WebHID so the physical dial drives this one.
+     Self-contained: only depends on the PNGs in images/dial-skin/. ponytail: one file, no deps. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ulanzi D100H — interactive dial</title>
+<style>
+  :root { --ink:#e8e9ee; --mut:#9aa0ad; --line:#2a2e38; --chip:#1b1e26; --accent:#5ac8e6; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#0f1115; color:var(--ink); font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif; }
+  header { text-align:center; padding:18px 12px 4px; }
+  header h1 { margin:0; font-size:18px; font-weight:700; }
+  header p { margin:4px 0 0; color:var(--mut); }
+  .bar { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:14px; }
+  button.btn { background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font:inherit; cursor:pointer; }
+  button.btn:hover { border-color:var(--accent); }
+  input.url { background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:inherit; width:210px; }
+  #status { text-align:center; color:var(--mut); min-height:20px; }
+  .stage { display:flex; justify-content:center; padding:8px 12px 24px; }
+  .dial-device { position:relative; width:340px; max-width:88vw; line-height:0; user-select:none; }
+  .dial-img { width:100%; height:auto; display:block; -webkit-user-drag:none; filter:drop-shadow(0 18px 30px rgba(0,0,0,.5)); }
+  .dwhite { position:absolute; inset:0; width:100%; height:auto; opacity:0; pointer-events:none; transition:opacity .04s ease; filter:drop-shadow(0 0 8px rgba(255,255,255,.7)); }
+  .dwhite.on { opacity:1; }
+  .dial-knob { position:absolute; transform:translate(-50%,-50%); transform-origin:50% 50%; cursor:ns-resize; -webkit-user-drag:none; border-radius:50%; transition:filter .2s; }
+  .dial-knob.spin { filter:brightness(1.3) drop-shadow(0 0 12px rgba(255,255,255,.85)); }
+  .dkey { position:absolute; transform:translate(-50%,-50%); background:transparent; border:0; padding:0; cursor:pointer; border-radius:10px; }
+  .dkey:hover { background:rgba(255,255,255,.07); }
+  .dlabel { position:absolute; transform:translate(-50%,-50%); background:var(--chip); border:1px solid var(--line); border-radius:7px;
+            padding:3px 7px; font-size:11px; font-weight:600; white-space:nowrap; pointer-events:none; text-align:center; }
+  .dlabel small { display:block; font-weight:400; color:var(--mut); font-size:9px; }
+  footer { max-width:680px; margin:0 auto; padding:0 18px 40px; color:var(--mut); font-size:13px; }
+  footer code { background:var(--chip); padding:1px 5px; border-radius:4px; }
+  a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Ulanzi D100H — interactive dial</h1>
+  <p>Drag the knob to spin · click a key or press <b>1–7</b> to light it · or <b>connect the real dial</b>.</p>
+</header>
+
+<div class="bar">
+  <button class="btn" id="hid">🎛️ Connect dial (WebHID)</button>
+  <input class="url" id="wsurl" value="ws://127.0.0.1:48907" title="plugin WebSocket bridge">
+  <button class="btn" id="ws">🔌 Connect plugin (WebSocket)</button>
+</div>
+<div id="status">Not connected — works with mouse/keyboard right now.</div>
+
+<div class="stage"><div class="dial-device" id="device"></div></div>
+
+<footer>
+  <p><b>Connect dial (WebHID)</b> reads the real D100H directly — turn the physical knob and this one spins.
+     Chrome/Edge only; pick <code>Dial_Lite</code> when prompted. Caveats (the device's, not ours):</p>
+  <ul>
+    <li>The dial's rotate <i>is</i> a real volume key, so connecting will also move your system volume.</li>
+    <li>Only the <b>dial + 3 media keys</b> are readable this way (Windows hides the Ctrl-C/V/Z/Y keys).
+        For all 7 keys cleanly, use a UlanziDeck plugin that forwards events to the <b>WebSocket</b> box above
+        (see <a href="plugin-sdk.md">plugin-sdk.md</a>).</li>
+    <li>VID <code>0xfff1</code> / PID <code>0x0082</code> — see <a href="hardware.md">hardware.md</a>. Assets + method: <a href="dial-skin.md">dial-skin.md</a>.</li>
+  </ul>
+</footer>
+
+<script>
+const A = 'images/dial-skin/';
+const KNOB = { cx:50.95, cy:61.58, dia:57.95 };
+// index: 0 Copy,1 Paste,2 Prev,3 Play/Pause,4 Next,5 Redo,6 Undo
+const KEYS = [
+  { cx:3.0, cy:62.6, w:7.5,  h:21.8, label:'Copy',  sub:'Ctrl+C', side:'L' },
+  { cx:3.0, cy:39.0, w:7.5,  h:22.0, label:'Paste', sub:'Ctrl+V', side:'L' },
+  { cx:16.4,cy:11.0, w:29.2, h:22.1, label:'Prev',  sub:'media',  side:'T' },
+  { cx:47.8,cy:11.0, w:32.6, h:22.1, label:'Play/Pause', sub:'media', side:'T' },
+  { cx:81.3,cy:10.9, w:33.3, h:22.0, label:'Next',  sub:'media',  side:'T' },
+  { cx:97.0,cy:39.0, w:7.5,  h:22.0, label:'Redo',  sub:'Ctrl+Y', side:'R' },
+  { cx:97.0,cy:63.3, w:7.5,  h:23.2, label:'Undo',  sub:'Ctrl+Z', side:'R' },
+];
+
+const device = document.getElementById('device');
+const base = new Image(); base.src = A+'ulanzi-dial.png'; base.className='dial-img'; base.alt='Ulanzi D100H'; base.draggable=false;
+device.append(base);
+const whites = KEYS.map((_,i)=>{ const w=new Image(); w.src=A+`white-${i+1}.png`; w.className='dwhite'; w.draggable=false; device.append(w); return w; });
+const knob = new Image(); knob.src=A+'ulanzi-knob.png'; knob.className='dial-knob'; knob.draggable=false;
+knob.style.left=KNOB.cx+'%'; knob.style.top=KNOB.cy+'%'; knob.style.width=KNOB.dia+'%';
+device.append(knob);
+
+let angle = 0, spinT;
+function spin(delta){ angle += delta; knob.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`; knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),220); }
+function press(){ knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),140); }
+function flash(i){ const w=whites[i]; if(!w) return; w.classList.add('on'); setTimeout(()=>w.classList.remove('on'),170); }
+
+// keys: hit-areas + labels
+KEYS.forEach((k,i)=>{
+  const b=document.createElement('button'); b.className='dkey';
+  b.style.left=k.cx+'%'; b.style.top=k.cy+'%'; b.style.width=k.w+'%'; b.style.height=k.h+'%';
+  b.title=`${k.label} (${k.sub})`;
+  b.addEventListener('pointerdown',e=>{ e.preventDefault(); flash(i); });
+  device.append(b);
+  const lab=document.createElement('div'); lab.className='dlabel'; lab.innerHTML=`${k.label}<small>${k.sub}</small>`;
+  const gx = k.side==='L'? -9 : k.side==='R'? 109 : k.cx;
+  const gy = k.side==='T'? -10 : k.cy;
+  lab.style.left=gx+'%'; lab.style.top=gy+'%';
+  device.append(lab);
+});
+
+// knob drag = spin; tap = press
+let drag=false, sy=0;
+knob.addEventListener('pointerdown',e=>{ drag=true; sy=e.clientY; knob.setPointerCapture(e.pointerId); e.preventDefault(); });
+knob.addEventListener('pointermove',e=>{ if(!drag) return; const dy=sy-e.clientY; sy=e.clientY; spin(dy*1.2); });
+knob.addEventListener('pointerup',e=>{ drag=false; try{knob.releasePointerCapture(e.pointerId);}catch{} });
+addEventListener('keydown',e=>{ const n=parseInt(e.key,10); if(n>=1&&n<=7) flash(n-1); });
+
+const status = t => document.getElementById('status').textContent = t;
+
+// ---- WebHID: read the real dial ----
+document.getElementById('hid').onclick = async () => {
+  if(!('hid' in navigator)) return status('WebHID not supported — use Chrome or Edge.');
+  try {
+    const [dev] = await navigator.hid.requestDevice({ filters:[{ vendorId:0xfff1, productId:0x0082 }] });
+    if(!dev) return status('No device picked.');
+    if(!dev.opened) await dev.open();
+    status('Connected to '+dev.productName+' — turn the real dial.');
+    dev.addEventListener('inputreport', e => {
+      // frame = [reportId, usageLow, usageHigh]; decode like the docs: code = bytes[1] | bytes[2]<<8
+      const b=[e.reportId]; for(let i=0;i<e.data.byteLength;i++) b.push(e.data.getUint8(i));
+      const code = (b[1]||0) | ((b[2]||0)<<8);
+      if(code===0xE9) spin(16);          // volume up  = rotate CW
+      else if(code===0xEA) spin(-16);    // volume down= rotate CCW
+      else if(code===0xE2) press();      // mute       = knob press
+      else if(code===0xB6) flash(2);     // prev
+      else if(code===0xCD) flash(3);     // play/pause
+      else if(code===0xB5) flash(4);     // next
+    });
+  } catch(err){ status('Connect failed: '+err.message); }
+};
+
+// ---- WebSocket: the plugin bridge (all 7 keys) ----
+// expects messages like {type:'rotate',dir:-1|1} {type:'press'} {type:'button',key:'0_0'}
+const KEYMAP = { '0_0':0,'0_1':1,'0_3':2,'0_4':3,'0_5':4,'0_7':5,'0_8':6 }; // adjust to your plugin's row_col
+document.getElementById('ws').onclick = () => {
+  const url=document.getElementById('wsurl').value.trim();
+  let ws; try{ ws=new WebSocket(url);}catch{ return status('Bad URL'); }
+  status('Connecting to '+url+' …');
+  ws.onopen = ()=>status('Plugin bridge connected: '+url);
+  ws.onclose= ()=>status('Plugin bridge closed.');
+  ws.onerror= ()=>status('WebSocket error — is the plugin running?');
+  ws.onmessage = e => { let m; try{m=JSON.parse(e.data);}catch{return;}
+    if(m.type==='rotate') spin((m.dir<0?-1:1)*16);
+    else if(m.type==='press') press();
+    else if(m.type==='button'){ const i=KEYMAP[m.key]; if(i!=null) flash(i); }
+  };
+};
+</script>
+</body>
+</html>
