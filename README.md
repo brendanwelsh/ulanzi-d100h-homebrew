@@ -44,7 +44,22 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/ulanzi-studio.md](docs/ulanzi-studio.md)** — online mode, where/how Studio saves bindings, the saving gotchas
 - **[docs/plugin-sdk.md](docs/plugin-sdk.md)** — writing a UlanziDeck plugin + the SDK pitfalls
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
+- **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen "gamepadviewer-style" D100H (knob spins, keys light up) — assets + method
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
+
+## Gallery
+Transparent-background PNGs of the D100H (in [`docs/images/`](docs/images)) — handy for slides, docs, or an
+on-screen skin:
+
+<p>
+  <img src="docs/images/d100h-dial-top.png"  alt="D100H — top view"    height="150">
+  <img src="docs/images/d100h-dial-iso.png"  alt="D100H — angled view" height="150">
+  <img src="docs/images/d100h-dial-knob.png" alt="D100H — iso view"    height="150">
+</p>
+
+Want it **interactive** — knob spins, keys light up on press? See **[docs/dial-skin.md](docs/dial-skin.md)**:
+a gamepadviewer-style on-screen D100H, with the layered assets + the method (from
+[chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
 
 ## More from the author
 Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):
