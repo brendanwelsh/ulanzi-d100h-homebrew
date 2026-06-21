@@ -64,7 +64,7 @@
 </style>
 </head>
 <body>
-<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 9</div>
+<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 10</div>
 <header>
   <h1>Ulanzi D100H, interactive dial</h1>
   <p>Drag the knob to spin. Tap a key or press <b>1&ndash;7</b>. <b>Connect</b> the real dial, or <b>Calibrate</b> to learn its codes.</p>
@@ -76,7 +76,7 @@
   <button class="btn" id="ws">🔌 Connect plugin (WebSocket)</button>
   <button class="btn" id="calbtn">🎯 Calibrate</button>
 </div>
-<div id="status"><span class="pill"><span class="dot"></span><span id="stxt">Not connected. Use mouse, touch, or keyboard right now.</span></span></div>
+<div id="status"><span class="pill"><span class="dot"></span><span id="stxt">Not connected. Mouse, touch, and keyboard work now.</span></span></div>
 
 <div id="cal">
   <div id="calmsg"></div>
@@ -157,7 +157,7 @@ KEYS.forEach((k,i)=>{
   b.addEventListener('pointerdown',e=>{ e.preventDefault(); lastFired=k.label; hud(); flash(i); });
   device.append(b);
   const lab=document.createElement('div'); lab.className='dlabel'; lab.innerHTML=`<span class="fn">${k.label}</span><span class="kb">${k.sub}</span>`;
-  lab.style.left=(k.side==='L'?-11:k.side==='R'?111:k.cx)+'%'; lab.style.top=(k.side==='T'?-13:k.cy)+'%';
+  lab.style.left=(k.side==='L'?-6:k.side==='R'?106:k.cx)+'%'; lab.style.top=(k.side==='T'?-13:k.cy)+'%';
   device.append(lab);
 });
 
