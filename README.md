@@ -8,10 +8,11 @@
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
-> 🌀 **Also in this repo — a reusable on-screen D100H.** The layered assets + method to render the dial
-> *interactively* (knob spins, keys light on press) live in **[docs/dial-skin.md](docs/dial-skin.md)** —
-> drop them into your own app. The diagram + GIFs here were generated from those assets with
-> [`rembg`](https://github.com/danielgatis/rembg) (background removal) + [Pillow](https://python-pillow.org) compositing.
+> 🌀 **Also in this repo — an on-screen D100H you can drop into your own app.** Like the controller
+> "skins" on gamepadviewer.com: a picture of the dial that **moves like the real one** — turn the knob and
+> the on-screen knob spins; press a key and it lights up. The image layers + how-to are in
+> **[docs/dial-skin.md](docs/dial-skin.md)**. (The diagram + GIFs above were built from those layers with
+> [`rembg`](https://github.com/danielgatis/rembg) for background removal + [Pillow](https://python-pillow.org).)
 
 ## The device & official links
 - 🛒 **Ulanzi D100H Dial Creative Controller** — product page / specs / where to buy:
