@@ -8,6 +8,11 @@
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
+> 🌀 **Also in this repo — a reusable on-screen D100H.** The layered assets + method to render the dial
+> *interactively* (knob spins, keys light on press) live in **[docs/dial-skin.md](docs/dial-skin.md)** —
+> drop them into your own app. The diagram + GIFs here were generated from those assets with
+> [`rembg`](https://github.com/danielgatis/rembg) (background removal) + [Pillow](https://python-pillow.org) compositing.
+
 ## The device & official links
 - 🛒 **Ulanzi D100H Dial Creative Controller** — product page / specs / where to buy:
   https://www.ulanzi.com/products/d100h-dial-creative-controller-i003

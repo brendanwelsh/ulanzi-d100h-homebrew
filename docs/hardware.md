@@ -24,6 +24,11 @@
 why the device doesn't look like "Ulanzi" at a glance. (Ulanzi's *wired* decks, e.g. the D200, use VID
 `0x2207`. The D100H does **not**.)
 
+**These IDs are the *device's* identity, not your machine's** — the same `KEHWIN` / `Dial_Lite` /
+`0xfff1` / `0x0082` on every D100H and every host OS. So you can **hardcode them** to find the unit; you
+don't have to enumerate or sniff to discover them (that's the point of writing them down here). They'd
+only change if Ulanzi shipped firmware with a different USB descriptor.
+
 ## HID interfaces it exposes
 The D100H is a composite device with 5 top-level HID collections:
 
