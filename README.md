@@ -49,6 +49,9 @@ behavior. This repo collects everything I found the hard way so you don't have t
    For all 7 buttons cleanly you need Studio running (a plugin, or a hotkey remap + a listener).
 5. **Plugins work.** A third-party UlanziDeck plugin's actions show up in Studio's action list and bind
    to the D100H's dial + keys fine. That's the clean path to custom behavior.
+6. **The dial *press* only registers while plugged into USB** (charging or not — a full battery doesn't
+   help). Rotation works fine wirelessly; the click sends nothing over Bluetooth alone. So don't build a
+   battery-only homebrew around knob-press. *(Observed on one unit — see [docs/hardware.md](docs/hardware.md).)*
 
 ## Contents
 - **[docs/hardware.md](docs/hardware.md)** — specs, USB/HID IDs, the 5 HID interfaces it exposes

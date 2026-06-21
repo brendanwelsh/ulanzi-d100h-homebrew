@@ -9,7 +9,7 @@ the device (see [ulanzi-studio.md](ulanzi-studio.md)).
 |---|---|---|---|
 | Dial rotate CW | Volume Up (`0xE9`) | Consumer | ✅ |
 | Dial rotate CCW | Volume Down (`0xEA`) | Consumer | ✅ |
-| Dial press | Mute (`0xE2`) | Consumer | ✅ |
+| Dial press | Mute (`0xE2`) | Consumer | ✅ *(but only fires while on USB — see note)* |
 | Button | Previous Track (`0xB6`) | Consumer | ✅ |
 | Button | Play / Pause (`0xCD`) | Consumer | ✅ |
 | Button | Next Track (`0xB5`) | Consumer | ✅ |
@@ -67,11 +67,21 @@ Reports on the Consumer interface (`usagePage 0x0c`) are 3 bytes — a report id
 Note: `node-hid` may or may not prepend a leading report-id byte depending on the device/OS. Scan for
 the start of the frame rather than hard-coding an offset.
 
+## ⚠️ The dial press only registers over USB
+The dial **rotation** (volume ±) works fine over Bluetooth, but the dial **press** (Mute, `02 E2 00`)
+does **not** register over the wireless link — *even at 100% battery*. It only fires while the D100H is
+plugged into USB-C. This is charge-only USB, so the press still rides the **Bluetooth** Consumer
+interface; what's gated is the device emitting the press at all without external power. Observed
+first-hand on one unit (may be unit-/firmware-specific) — see [hardware.md](hardware.md#device). If your
+build maps the press to an action, assume it needs USB power until you confirm otherwise.
+
 ## What this means for homebrew
 - You **can** drive your own software from the dial + the 3 media buttons by reading the Consumer
   interface — **but** those are real volume/media keys, so the OS will *also* act on them (your volume
   moves, your media skips) unless you suppress the keys at the OS level (e.g. a low-level hook). Note a
   global media-key hook can't tell the dial apart from your keyboard's media keys.
+- **The dial press is wireless-unreliable:** it only registers while plugged into USB (above), so don't
+  depend on knob-press as a control in a battery-only setup — use rotation or the 3 media keys instead.
 - The 4 Ctrl-key buttons are effectively **unusable** for HID-only homebrew on Windows: you can't read
   them, and you can't safely repurpose Ctrl+C/V/Z/Y anyway.
 - **Net:** a true "no Ulanzi app" build caps at **dial + 3 buttons, with volume/media side effects.**
