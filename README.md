@@ -4,7 +4,7 @@
 > actually works at the HID level, how Ulanzi Studio stores its config, and the gotchas you'll hit
 > building your own integration. Unofficial; gathered by poking at a real unit on Windows 11.
 
-![Ulanzi D100H default (offline) layout](docs/images/d100h-layout.svg)
+<p align="center"><img src="docs/images/d100h-layout.png" alt="Ulanzi D100H default (offline) layout" width="520"></p>
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
@@ -48,23 +48,16 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 
 ## Gallery
-The D100H **in action** — knob spins, the 7 keys light up white on press (rendered straight from the
-layered [dial-skin](docs/dial-skin.md) assets; transparent background):
+Transparent dial PNGs (in [`docs/images/`](docs/images)) — and the dial **in action** (knob spins, keys flash white):
 
-<p><img src="docs/images/d100h-dial-demo.gif" alt="Ulanzi D100H — knob spinning, keys lighting up on press" width="300"></p>
-
-Transparent-background PNGs of the dial (in [`docs/images/`](docs/images)) — handy for slides, docs, or an
-on-screen skin:
-
-<p>
-  <img src="docs/images/d100h-dial-top.png"  alt="D100H — top view"    height="150">
-  <img src="docs/images/d100h-dial-iso.png"  alt="D100H — angled view" height="150">
-  <img src="docs/images/d100h-dial-knob.png" alt="D100H — iso view"    height="150">
+<p align="center">
+  <img src="docs/images/d100h-dial-top.png"  alt="D100H — top"       height="150">
+  <img src="docs/images/d100h-dial-iso.png"  alt="D100H — angled"    height="150">
+  <img src="docs/images/d100h-dial-knob.png" alt="D100H — iso"       height="150">
+  <img src="docs/images/d100h-dial-demo.gif" alt="D100H — in action" height="150">
 </p>
 
-Want it **interactive** — knob spins, keys light up on press? See **[docs/dial-skin.md](docs/dial-skin.md)**:
-a gamepadviewer-style on-screen D100H, with the layered assets + the method (from
-[chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
+Interactive version — the spin/press method + assets: **[docs/dial-skin.md](docs/dial-skin.md)** (from [chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
 
 ## More from the author
 Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):
