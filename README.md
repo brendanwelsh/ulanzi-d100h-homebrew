@@ -48,6 +48,10 @@ behavior. This repo collects everything I found the hard way so you don't have t
 
 ## More from the author
 Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):
+- **[chumthesizer](https://github.com/brendanwelsh/chumthesizer)** (CHUM-1) — a browser/Electron
+  groovebox synth you play with real hardware: the **D100H dial** warps the sound (turn = FX macro,
+  press = play/stop) and its **7 keys switch the sounds**, alongside an Apple Magic Trackpad and a
+  Stream Deck pedal. A fun, musical example of driving software from the dial.
 - **[ulanzi-camera-switcher](https://github.com/brendanwelsh/ulanzi-camera-switcher)** — drive a live
   security-camera viewer from a hardware dial: **rotate** = next/prev camera, **press** = open/close a
   maximized mpv viewer, **keys** jump to a specific camera. Works with any RTSP/HTTP camera (UniFi Protect,
