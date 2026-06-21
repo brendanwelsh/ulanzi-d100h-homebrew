@@ -11,8 +11,8 @@ spin the knob, light the keys, or connect your real D100H over WebHID and watch 
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
-> 🌀 **Also in this repo — an on-screen D100H you can drop into your own app.** Like the controller
-> "skins" on gamepadviewer.com: a picture of the dial that **moves like the real one** — turn the knob and
+> 🌀 **Also in this repo — an on-screen D100H you can drop into your own app.** A picture of the dial
+> that **moves like the real one** — turn the knob and
 > the on-screen knob spins; press a key and it lights up. The image layers + how-to are in
 > **[docs/dial-skin.md](docs/dial-skin.md)**. (The diagram + GIFs above were built from those layers with
 > [`rembg`](https://github.com/danielgatis/rembg) for background removal + [Pillow](https://python-pillow.org).)
@@ -59,7 +59,7 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/ulanzi-studio.md](docs/ulanzi-studio.md)** — online mode, where/how Studio saves bindings, the saving gotchas
 - **[docs/plugin-sdk.md](docs/plugin-sdk.md)** — writing a UlanziDeck plugin + the SDK pitfalls
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
-- **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen "gamepadviewer-style" D100H (knob spins, keys light up) — assets + method
+- **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen interactive D100H (knob spins, keys light up) — assets + method
 - **[docs/dial-viewer.html](docs/dial-viewer.html)** — interactive page: drive the dial with mouse/keyboard or your real D100H (WebHID) · [live](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html)
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 

@@ -1,7 +1,7 @@
-# On-screen D100H — a "gamepadviewer-style" dial skin
+# On-screen D100H — an interactive dial skin
 
 A drop-in way to **show the D100H on screen and make it react**: the knob **spins** when you turn it and
-each key **lights up** when pressed. It's the same trick gamepad skins use — stacked PNG layers + a little
+each key **lights up** when pressed. It's a simple trick — stacked PNG layers + a little
 CSS/JS — and it pairs perfectly with the WebSocket-bridge in [plugin-sdk.md](plugin-sdk.md) (forward real
 dial/key events to a web page, then drive this widget with them).
 
