@@ -18,7 +18,9 @@ All PNGs are background-knocked-out (transparent), aligned to the same 528×583 
 | `ulanzi-knob.png` | **just the knob**, as its own square layer that rotates (306×306) |
 | `white-1.png` … `white-7.png` | a **white silhouette of one key each**, full-frame; hidden until that key is pressed |
 
-![dial-skin base](images/dial-skin/ulanzi-dial.png)
+![D100H dial skin in action — knob spins, keys light up](images/d100h-dial-demo.gif)
+
+*Above: the assets below, animated — `rotate()` on the knob layer + a per-key silhouette toggled on press.*
 
 ## The layer model (bottom → top)
 1. **base** — `ulanzi-dial.png` at `width:100%`.
