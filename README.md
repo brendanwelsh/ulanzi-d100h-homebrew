@@ -46,6 +46,17 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 
+## More from the author
+Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):
+- **[ulanzi-camera-switcher](https://github.com/brendanwelsh/ulanzi-camera-switcher)** — drive a live
+  security-camera viewer from a hardware dial: **rotate** = next/prev camera, **press** = open/close a
+  maximized mpv viewer, **keys** jump to a specific camera. Works with any RTSP/HTTP camera (UniFi Protect,
+  Reolink, Frigate, ONVIF…) and ships as both a UlanziDeck plugin *and* a standalone HID daemon — a
+  working example of the dial-driving approach these notes enable.
+- **[ulanzi-pixel-clock-awtrix](https://github.com/brendanwelsh/ulanzi-pixel-clock-awtrix)** — guide +
+  curated resources for the Ulanzi **TC001 Pixel Clock** on AWTRIX firmware: hardware, flashing, the
+  MQTT/HTTP API, and Home Assistant integrations.
+
 ## Disclaimer
 Unofficial; no affiliation with Ulanzi. Findings are from one D100H on Windows 11 — firmware or app
 updates may change behavior, and macOS may differ. Corrections and additions welcome via PR/issue.

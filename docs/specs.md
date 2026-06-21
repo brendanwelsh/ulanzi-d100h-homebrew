@@ -17,6 +17,36 @@ The manual's *Factory Default Function* page confirms the 7-key + dial layout (a
 There is also a separate **device-switch button** (not one of the 7 macro keys): short-press cycles the
 up-to-3 paired Bluetooth devices; press-and-hold 3 s enters pairing mode (status LED 1/2/3 shows the active device).
 
+## Indicator lights (LED meanings)
+> **Source: the official Ulanzi D100H manual** (the Manuals+ transcriptions + the official PDF linked in
+> [resources.md](resources.md)). These are the *documented* meanings — **not independently bench-verified
+> on our unit**, so they're listed here for reference.
+
+**What the red/orange light means → the device is charging.** The charge indicator is the clearest
+documented use of a colour LED (the manual revisions disagree on whether it's red or orange — see below —
+so these notes call it **red/orange**):
+
+| LED state | Documented meaning |
+|---|---|
+| **Red / orange, steady** | **Charging** |
+| **Green, steady** | Fully charged / charge complete |
+| Indicator **flashing** (after holding the device-switch button ~3 s) | In Bluetooth **pairing** mode |
+| Indicator **off** | Connected to a host successfully |
+| Status LED **1 / 2 / 3** | Which of the up-to-3 paired devices is currently active (see the device-switch button above) |
+| Status LED **[1] flashing** on power-up after the reset combo | **Factory reset** complete (see below) |
+
+### Why "red/orange" — the manual revisions disagree on the charging colour
+"Red = charging / green = full" is what most copies of the manual state, but **one manual revision instead
+describes the charging colour as _orange_** (green still = fully charged). Red and orange are easy to
+confuse on a small single LED anyway, so treat them as the same "charging" state. Candidates for the
+charging colour, with where each came from:
+- **Red** — Ulanzi D100H manual, [Manuals+ "Dial Creative Controller"](https://manuals.plus/ulanzi/d100h-dial-creative-controller-manual) and [Manuals+ "Dial Video Editing Assistant"](https://manuals.plus/ulanzi/d100h-dial-video-editing-assistant-manual) transcriptions.
+- **Orange** — an alternate revision of the same manual (noted in the Manuals+ listings above).
+- Both agree **green = fully charged**, and neither documents a separate "low battery" colour.
+
+Note the **flashing** states are pairing / factory-reset, *not* charging — a **steady** colour is the
+battery/charge indicator, so a blinking light is never the charge state.
+
 ## Specs
 | | |
 |---|---|
@@ -24,11 +54,17 @@ up-to-3 paired Bluetooth devices; press-and-hold 3 s enters pairing mode (status
 | Bluetooth | **BLE 5.1**, range ≥10 m; advertised name **"UlanziDial"** |
 | Connection | Bluetooth only — **USB-C is charge-only (no data mode)** |
 | Paired devices | up to 3 simultaneously |
-| Battery | 3.7 V 1000 mAh Li-Po · standby 200 µA · ~2.5 h charge |
-| Charging | Type-C, 5 V ⎓ 2 A |
+| Battery | 3.7 V 1000 mAh Li-Po · max draw ~400 mA · standby ~200 µA |
+| Battery life | **Up to ~60 days standby**, but only **~2.5 h of *continuous dial rotation*** — that's worst case, since the haptic linear motor is the big power draw. Everyday key/press use (motor idle) lasts far longer, much closer to the standby end than to 2.5 h. |
+| Charging | Type-C, 5 V ⎓ 2 A · **~2.5 h** for 0→100% |
 | Weight | 260 g |
 | Materials | ABS+PC body, aluminium-alloy knob, silicone anti-slip pad; built-in magnetic mount |
 | OS support | Windows 10+ · macOS 11+ (Intel) / 10.13+ (Apple Silicon) |
+
+_Battery-life figures (≈60-day standby / ≈2.5 h continuous-rotation / ≈2.5 h charge) are Ulanzi's official
+[product-page](https://www.ulanzi.com/products/d100h-dial-creative-controller-i003) claims; capacity,
+standby current and max draw are from the manual. None of the runtime numbers were independently
+bench-measured here._
 
 ## Factory reset
 Power off → hold **Knob + device-switch button** together → power on → status LED [1] flashes = reset complete.
