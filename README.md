@@ -44,7 +44,42 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/ulanzi-studio.md](docs/ulanzi-studio.md)** — online mode, where/how Studio saves bindings, the saving gotchas
 - **[docs/plugin-sdk.md](docs/plugin-sdk.md)** — writing a UlanziDeck plugin + the SDK pitfalls
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
+- **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen "gamepadviewer-style" D100H (knob spins, keys light up) — assets + method
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
+
+## Gallery
+The D100H **in action** — knob spins, the 7 keys light up (rendered straight from the layered
+[dial-skin](docs/dial-skin.md) assets, RGB keys and all):
+
+<p><img src="docs/images/d100h-dial-demo.gif" alt="Ulanzi D100H — knob spinning, keys lighting up in RGB" width="300"></p>
+
+Transparent-background PNGs of the dial (in [`docs/images/`](docs/images)) — handy for slides, docs, or an
+on-screen skin:
+
+<p>
+  <img src="docs/images/d100h-dial-top.png"  alt="D100H — top view"    height="150">
+  <img src="docs/images/d100h-dial-iso.png"  alt="D100H — angled view" height="150">
+  <img src="docs/images/d100h-dial-knob.png" alt="D100H — iso view"    height="150">
+</p>
+
+Want it **interactive** — knob spins, keys light up on press? See **[docs/dial-skin.md](docs/dial-skin.md)**:
+a gamepadviewer-style on-screen D100H, with the layered assets + the method (from
+[chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
+
+## More from the author
+Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):
+- **[chumthesizer](https://github.com/brendanwelsh/chumthesizer)** (CHUM-1) — a browser/Electron
+  groovebox synth you play with real hardware: the **D100H dial** warps the sound (turn = FX macro,
+  press = play/stop) and its **7 keys switch the sounds**, alongside an Apple Magic Trackpad and a
+  Stream Deck pedal. A fun, musical example of driving software from the dial.
+- **[ulanzi-camera-switcher](https://github.com/brendanwelsh/ulanzi-camera-switcher)** — drive a live
+  security-camera viewer from a hardware dial: **rotate** = next/prev camera, **press** = open/close a
+  maximized mpv viewer, **keys** jump to a specific camera. Works with any RTSP/HTTP camera (UniFi Protect,
+  Reolink, Frigate, ONVIF…) and ships as both a UlanziDeck plugin *and* a standalone HID daemon — a
+  working example of the dial-driving approach these notes enable.
+- **[ulanzi-pixel-clock-awtrix](https://github.com/brendanwelsh/ulanzi-pixel-clock-awtrix)** — guide +
+  curated resources for the Ulanzi **TC001 Pixel Clock** on AWTRIX firmware: hardware, flashing, the
+  MQTT/HTTP API, and Home Assistant integrations.
 
 ## Disclaimer
 Unofficial; no affiliation with Ulanzi. Findings are from one D100H on Windows 11 — firmware or app

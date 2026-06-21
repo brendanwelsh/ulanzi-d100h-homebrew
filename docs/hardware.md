@@ -3,6 +3,10 @@
 ## Device
 - **Ulanzi D100H Dial Creative Controller** — Bluetooth Low Energy **5.1** (advertised name "UlanziDial"), 1000 mAh battery. Full specs + official diagram: **[specs.md](specs.md)**.
 - 1 stepless dial (rotate + press, with haptics) + 7 RGB keys.
+  - **Haptic feedback only fires while the dial is connected to a host over Bluetooth.** With no active
+    Bluetooth connection, the dial still rotates and presses but gives **no haptic buzz** — the motorised
+    feedback is gated on the BLE link being up. *(Observed first-hand. The haptic linear motor is also the
+    device's biggest power draw — see the battery-life note in [specs.md](specs.md).)*
 - Pairs to up to 3 hosts at once; a switch on the underside cycles the paired device.
 - **USB-C is charge-only — there is no wired data mode.** It talks to the host purely as a Bluetooth
   HID peripheral. The OS surfaces it through the normal HID stack, so `node-hid` / `hidapi` can open the
