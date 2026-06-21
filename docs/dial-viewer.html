@@ -14,7 +14,7 @@
 <style>
   :root { --ink:#e8e9ee; --mut:#9aa0ad; --line:#2a2e38; --chip:#1b1e26; --accent:#5ac8e6; }
   * { box-sizing:border-box; }
-  body { margin:0; background:#0f1115; color:var(--ink); font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif; }
+  body { margin:0; background:#0f1115; color:var(--ink); font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif; overflow-x:hidden; }
   header { text-align:center; padding:16px 14px 4px; }
   header h1 { margin:0; font-size:18px; font-weight:700; }
   header p { margin:5px auto 0; max-width:520px; color:var(--mut); }
@@ -57,14 +57,14 @@
   footer code { background:var(--chip); padding:1px 5px; border-radius:4px; }
   a { color:var(--accent); }
   @media (max-width:560px){
-    .dial-device { max-width:56vw; }
+    .dial-device { max-width:50vw; }
     .dlabel { font-size:10px; padding:2px 5px; }
     input.url { width:150px; }
   }
 </style>
 </head>
 <body>
-<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 8</div>
+<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 9</div>
 <header>
   <h1>Ulanzi D100H, interactive dial</h1>
   <p>Drag the knob to spin. Tap a key or press <b>1&ndash;7</b>. <b>Connect</b> the real dial, or <b>Calibrate</b> to learn its codes.</p>
