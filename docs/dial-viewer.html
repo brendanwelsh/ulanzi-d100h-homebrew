@@ -1,30 +1,33 @@
 <!doctype html>
-<!-- Interactive on-screen Ulanzi D100H — gamepadviewer-style.
-     Drag the knob to spin (rotary, works on touch), click keys (or 1-7) to light them.
+<!-- Interactive on-screen Ulanzi D100H, gamepadviewer-style.
+     Drag the knob to spin (rotary, works on touch), tap keys (or 1-7) to light them.
      Connect the real dial over WebHID (or a plugin WebSocket) to drive it live.
      Calibrate to learn your unit's actual codes. Self-contained; only needs images/dial-skin/*. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ulanzi D100H — interactive dial</title>
+<title>Ulanzi D100H, interactive dial</title>
 <style>
   :root { --ink:#e8e9ee; --mut:#9aa0ad; --line:#2a2e38; --chip:#1b1e26; --accent:#5ac8e6; }
   * { box-sizing:border-box; }
   body { margin:0; background:#0f1115; color:var(--ink); font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif; }
-  header { text-align:center; padding:16px 12px 4px; }
+  header { text-align:center; padding:16px 14px 4px; }
   header h1 { margin:0; font-size:18px; font-weight:700; }
-  header p { margin:4px 0 0; color:var(--mut); }
+  header p { margin:5px auto 0; max-width:520px; color:var(--mut); }
   .bar { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:14px; }
   button.btn { background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 14px; font:inherit; cursor:pointer; }
   button.btn:hover { border-color:var(--accent); }
   input.url { background:var(--chip); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:inherit; width:210px; }
-  #status { text-align:center; color:var(--mut); min-height:20px; padding:0 12px; }
-  #hud { text-align:center; color:var(--mut); font:12px/1.4 ui-monospace,Menlo,Consolas,monospace; margin:6px 0 2px; }
-  #cal { display:none; max-width:560px; margin:8px auto 0; padding:10px 14px; border:1px solid var(--accent);
+  #status { text-align:center; padding:2px 12px; }
+  #status .pill { display:inline-flex; align-items:center; gap:8px; background:var(--chip); border:1px solid var(--line);
+                  border-radius:999px; padding:5px 14px; color:var(--mut); font-size:13px; }
+  #status .dot { width:8px; height:8px; border-radius:50%; background:#6b7280; flex:none; }
+  #status.ok .dot { background:#46d39a; }
+  #cal { display:none; max-width:560px; margin:10px auto 0; padding:10px 14px; border:1px solid var(--accent);
          border-radius:10px; text-align:center; background:rgba(90,200,230,.08); }
   #cal.on { display:block; }
-  .stage { display:flex; justify-content:center; padding:30px 24px 18px; }
+  .stage { display:flex; justify-content:center; padding:42px 24px 30px; }
   .dial-device { position:relative; width:340px; max-width:min(340px,72vw); line-height:0; user-select:none; }
   .dial-img { width:100%; height:auto; display:block; -webkit-user-drag:none; filter:drop-shadow(0 18px 30px rgba(0,0,0,.5)); }
   .dwhite { position:absolute; inset:0; width:100%; height:auto; opacity:0; pointer-events:none; transition:opacity .04s ease; filter:drop-shadow(0 0 8px rgba(255,255,255,.7)); }
@@ -38,6 +41,8 @@
   .dlabel { position:absolute; transform:translate(-50%,-50%); background:var(--chip); border:1px solid var(--line); border-radius:7px;
             padding:3px 7px; font-size:11px; font-weight:600; white-space:nowrap; pointer-events:none; text-align:center; }
   .dlabel small { display:block; font-weight:400; color:var(--mut); font-size:9px; }
+  #hud { text-align:center; color:var(--ink); font:13px/1.6 ui-monospace,Menlo,Consolas,monospace; margin:0 12px 22px; }
+  #hud b { color:var(--accent); font-weight:600; }
   .panel { max-width:560px; margin:6px auto 12px; padding:0 18px; }
   .panel .head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:var(--mut); font-size:12px; margin-bottom:4px; }
   #log { background:var(--chip); border:1px solid var(--line); border-radius:8px; padding:8px 10px; height:148px; overflow:auto;
@@ -55,8 +60,8 @@
 </head>
 <body>
 <header>
-  <h1>Ulanzi D100H — interactive dial</h1>
-  <p>Drag the knob to spin · tap a key or press <b>1–7</b> · <b>connect</b> the real dial · <b>calibrate</b> to learn its codes.</p>
+  <h1>Ulanzi D100H, interactive dial</h1>
+  <p>Drag the knob to spin. Tap a key or press <b>1&ndash;7</b>. <b>Connect</b> the real dial, or <b>Calibrate</b> to learn its codes.</p>
 </header>
 
 <div class="bar">
@@ -65,8 +70,7 @@
   <button class="btn" id="ws">🔌 Connect plugin (WebSocket)</button>
   <button class="btn" id="calbtn">🎯 Calibrate</button>
 </div>
-<div id="status">Not connected — works with mouse/touch/keyboard right now.</div>
-<div id="hud"></div>
+<div id="status"><span class="pill"><span class="dot"></span><span id="stxt">Not connected. Use mouse, touch, or keyboard right now.</span></span></div>
 
 <div id="cal">
   <div id="calmsg"></div>
@@ -78,21 +82,23 @@
 
 <div class="stage"><div class="dial-device" id="device"></div></div>
 
+<div id="hud"></div>
+
 <div class="panel">
-  <div class="head"><span>Event log — connect, then press/turn each control; paste this to map keys</span>
+  <div class="head"><span>Event log: connect, then press or turn each control, and paste this to map keys</span>
     <button class="btn" id="clear" style="padding:4px 10px">Clear</button></div>
   <div id="log"><div class="m">waiting for input…</div></div>
 </div>
 
 <footer>
-  <p><b>Connect dial (WebHID)</b> reads the real D100H — turn the physical knob and this one spins. Chrome/Edge only;
+  <p><b>Connect dial (WebHID)</b> reads the real D100H, so turning the physical knob spins this one. Chrome or Edge only;
      pick <code>Dial_Lite</code> when prompted. <b>Calibrate</b> walks each control so the page learns your unit's
      codes (saved in your browser). Caveats (the device's):</p>
   <ul>
     <li>The dial's rotate <i>is</i> a real volume key, so connecting will also move your system volume.</li>
-    <li>Over WebHID only the <b>dial + 3 media keys</b> are readable (Windows hides Ctrl-C/V/Z/Y). For all 7,
+    <li>Over WebHID only the <b>dial and 3 media keys</b> are readable (Windows hides Ctrl-C/V/Z/Y). For all 7,
         forward events from a UlanziDeck plugin to the <b>WebSocket</b> box (see <a href="plugin-sdk.md">plugin-sdk.md</a>).</li>
-    <li>VID <code>0xfff1</code> / PID <code>0x0082</code> — <a href="hardware.md">hardware.md</a>. Assets + method: <a href="dial-skin.md">dial-skin.md</a>.</li>
+    <li>VID <code>0xfff1</code> / PID <code>0x0082</code> (see <a href="hardware.md">hardware.md</a>). Assets and method: <a href="dial-skin.md">dial-skin.md</a>.</li>
   </ul>
 </footer>
 
@@ -109,7 +115,7 @@ const KEYS = [
   { cx:97.0,cy:39.0, w:7.5,  h:22.0, label:'Redo',  sub:'Ctrl+Y', side:'R' },
   { cx:97.0,cy:63.3, w:7.5,  h:23.2, label:'Undo',  sub:'Ctrl+Z', side:'R' },
 ];
-const KEYMAP = { '0_0':0,'0_1':1,'0_3':2,'0_4':3,'0_5':4,'0_7':5,'0_8':6 }; // default WS row_col → key (tune via Calibrate)
+const KEYMAP = { '0_0':0,'0_1':1,'0_3':2,'0_4':3,'0_5':4,'0_7':5,'0_8':6 }; // default WS row_col to key (tune via Calibrate)
 
 const device = document.getElementById('device');
 const base = new Image(); base.src=A+'ulanzi-dial.png'; base.className='dial-img'; base.alt='Ulanzi D100H'; base.draggable=false; device.append(base);
@@ -117,14 +123,19 @@ const whites = KEYS.map((_,i)=>{ const w=new Image(); w.src=A+`white-${i+1}.png`
 const knob = new Image(); knob.src=A+'ulanzi-knob.png'; knob.className='dial-knob'; knob.draggable=false;
 knob.style.left=KNOB.cx+'%'; knob.style.top=KNOB.cy+'%'; knob.style.width=KNOB.dia+'%'; device.append(knob);
 
-const status = t => document.getElementById('status').textContent = t;
+const stxt = document.getElementById('stxt');
+const statusEl = document.getElementById('status');
 const hudEl = document.getElementById('hud');
 const logEl = document.getElementById('log');
+const status = t => { stxt.textContent = t; };
+const connected = () => statusEl.classList.add('ok');
 
-let angle=0, detents=0, lastFired='—', spinT;
-function hud(){ hudEl.textContent = `angle ${(((Math.round(angle)%360)+360)%360)}°   ·   detents ${detents}   ·   last: ${lastFired}`; }
+let angle=0, revTotal=0, spins=0, flips=0, lastDir=0, lastFired='—', spinT;
+function hud(){ const a=(((Math.round(angle)%360)+360)%360);
+  hudEl.innerHTML = `angle <b>${a}&deg;</b>     full spins <b>${spins}</b>     direction changes <b>${flips}</b>     last: <b>${lastFired}</b>`; }
 function applyAngle(){ knob.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`; knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),220); hud(); }
-function spin(delta){ angle+=delta; applyAngle(); }
+function spin(delta){ angle+=delta; revTotal+=Math.abs(delta); spins=Math.floor(revTotal/360);
+  if(Math.abs(delta)>=4){ const d=delta>0?1:-1; if(lastDir && d!==lastDir) flips++; lastDir=d; } applyAngle(); }
 function press(){ lastFired='press'; knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),150); hud(); }
 function flash(i){ const w=whites[i]; if(w){ w.classList.add('on'); setTimeout(()=>w.classList.remove('on'),180); } }
 
@@ -144,21 +155,21 @@ KEYS.forEach((k,i)=>{
   device.append(lab);
 });
 
-// knob: rotary drag (mouse + touch) ; tap = press
+// knob: rotary drag (mouse + touch); tap = press
 let drag=false, lastA=0, cx0=0, cy0=0, moved=false;
 const ptAng = e => Math.atan2(e.clientY-cy0, e.clientX-cx0)*180/Math.PI;
 knob.addEventListener('pointerdown',e=>{ const r=knob.getBoundingClientRect(); cx0=r.left+r.width/2; cy0=r.top+r.height/2;
   lastA=ptAng(e); drag=true; moved=false; knob.setPointerCapture(e.pointerId); e.preventDefault(); });
 knob.addEventListener('pointermove',e=>{ if(!drag) return; const a=ptAng(e); let d=a-lastA; d=((d+540)%360)-180;
-  if(Math.abs(d)>0.6) moved=true; angle+=d; lastA=a; applyAngle(); });
+  if(Math.abs(d)>0.6) moved=true; lastA=a; spin(d); });
 function endDrag(e){ if(drag&&!moved) press(); drag=false; try{knob.releasePointerCapture(e.pointerId);}catch{} }
 knob.addEventListener('pointerup',endDrag); knob.addEventListener('pointercancel',endDrag);
 addEventListener('keydown',e=>{ const n=parseInt(e.key,10); if(n>=1&&n<=7){ lastFired=KEYS[n-1].label; hud(); flash(n-1); } });
 
 // ---- action helpers ----
-function applyAct(L){ if(L.t==='key'){ lastFired=KEYS[L.i].label; flash(L.i); }
-  else if(L.t==='rot'){ lastFired='rotate '+(L.dir>0?'CW':'CCW'); detents+=L.dir; spin(L.dir*16); }
-  else { press(); } hud(); }
+function applyAct(L){ if(L.t==='key'){ lastFired=KEYS[L.i].label; flash(L.i); hud(); }
+  else if(L.t==='rot'){ lastFired='rotate '+(L.dir>0?'CW':'CCW'); spin(L.dir*16); }
+  else { press(); } }
 function labelAct(L){ return L.t==='key'?KEYS[L.i].label : L.t==='rot'?('rotate '+(L.dir>0?'CW':'CCW')) : 'press'; }
 
 // ---- calibration ----
@@ -172,19 +183,19 @@ const CAL=[
 let learned = (()=>{ try{ return JSON.parse(localStorage.getItem('d100h-map')||'{}'); }catch{ return {}; } })();
 let conn=false, calOn=false, calStep=0;
 const calBox=document.getElementById('cal');
-function calPrompt(){ document.getElementById('calmsg').innerHTML=`Calibrating — on the real dial do: <b>${CAL[calStep].label}</b> &nbsp;(${calStep+1}/${CAL.length})`;
+function calPrompt(){ document.getElementById('calmsg').innerHTML=`Calibrating. On the real dial do: <b>${CAL[calStep].label}</b> &nbsp;(${calStep+1}/${CAL.length})`;
   const a=CAL[calStep].act; if(a.t==='key') flash(a.i); }
 function startCal(){ if(!conn){ status('Connect the dial first (WebHID or WebSocket), then Calibrate.'); return; }
   calOn=true; calStep=0; learned={}; calBox.classList.add('on'); calPrompt(); status('Calibrating…'); }
-function calCapture(token){ learned[token]=CAL[calStep].act; logEvent('CAL', token, '→ '+CAL[calStep].label); calStep++;
+function calCapture(token){ learned[token]=CAL[calStep].act; logEvent('CAL', token, 'to '+CAL[calStep].label); calStep++;
   if(calStep>=CAL.length){ calOn=false; calBox.classList.remove('on'); localStorage.setItem('d100h-map',JSON.stringify(learned));
-    status('Calibrated + saved. Paste this map to share: '+JSON.stringify(learned)); logEvent('CAL','DONE',JSON.stringify(learned)); }
+    status('Calibrated and saved. Paste this map to share: '+JSON.stringify(learned)); logEvent('CAL','DONE',JSON.stringify(learned)); }
   else calPrompt(); }
 document.getElementById('calbtn').onclick=startCal;
 document.getElementById('calskip').onclick=()=>{ if(calOn){ logEvent('CAL','(skip)',CAL[calStep].label); calStep++; if(calStep>=CAL.length){ calOn=false; calBox.classList.remove('on'); localStorage.setItem('d100h-map',JSON.stringify(learned)); status('Calibrated (some skipped). Map: '+JSON.stringify(learned)); } else calPrompt(); } };
 document.getElementById('calcancel').onclick=()=>{ calOn=false; calBox.classList.remove('on'); status('Calibration cancelled.'); };
 
-// route any device event: calibrate → learned map → built-in default
+// route any device event: calibrate, then learned map, then built-in default
 let calCool=0;
 function route(token, hexOrRaw, src, dflt){
   if(calOn){ if(performance.now()<calCool) return; calCool=performance.now()+700; calCapture(token); return; }
@@ -195,19 +206,19 @@ function route(token, hexOrRaw, src, dflt){
 
 // ---- WebHID ----
 document.getElementById('hid').onclick = async () => {
-  if(!('hid' in navigator)) return status('WebHID not supported — use Chrome or Edge.');
+  if(!('hid' in navigator)) return status('WebHID not supported. Use Chrome or Edge.');
   try{
     const [dev]=await navigator.hid.requestDevice({filters:[{vendorId:0xfff1,productId:0x0082}]});
     if(!dev) return status('No device picked.');
     if(!dev.opened) await dev.open();
-    conn=true; status('Connected to '+dev.productName+'. Turn the dial — or hit Calibrate.');
+    conn=true; connected(); status('Connected to '+dev.productName+'. Turn the dial, or hit Calibrate.');
     dev.addEventListener('inputreport', e=>{
       const b=[e.reportId]; for(let i=0;i<e.data.byteLength;i++) b.push(e.data.getUint8(i));
       const code=(b[1]||0)|((b[2]||0)<<8); if(code===0) return; // release
       const hex=b.map(x=>x.toString(16).padStart(2,'0')).join(' ');
       route('hid:0x'+code.toString(16), hex, 'HID r'+e.reportId, ()=>{
-        if(code===0xE9){ lastFired='rotate CW'; detents++; spin(16); hud(); return 'rotate CW (vol+)'; }
-        if(code===0xEA){ lastFired='rotate CCW'; detents--; spin(-16); hud(); return 'rotate CCW (vol-)'; }
+        if(code===0xE9){ lastFired='rotate CW'; spin(16); return 'rotate CW (vol+)'; }
+        if(code===0xEA){ lastFired='rotate CCW'; spin(-16); return 'rotate CCW (vol-)'; }
         if(code===0xE2){ press(); return 'press (mute)'; }
         if(code===0xB6){ lastFired='Prev'; flash(2); hud(); return 'Prev'; }
         if(code===0xCD){ lastFired='Play/Pause'; flash(3); hud(); return 'Play/Pause'; }
@@ -223,13 +234,13 @@ document.getElementById('ws').onclick=()=>{
   const url=document.getElementById('wsurl').value.trim(); let ws;
   try{ ws=new WebSocket(url); }catch{ return status('Bad URL'); }
   status('Connecting to '+url+' …');
-  ws.onopen =()=>{ conn=true; status('Plugin bridge connected: '+url+'. Press/turn — or Calibrate.'); };
-  ws.onclose=()=>status('Plugin bridge closed.');
-  ws.onerror=()=>status('WebSocket error — is the plugin running?');
+  ws.onopen =()=>{ conn=true; connected(); status('Plugin bridge connected: '+url+'. Press or turn, or Calibrate.'); };
+  ws.onclose=()=>{ statusEl.classList.remove('ok'); status('Plugin bridge closed.'); };
+  ws.onerror=()=>status('WebSocket error. Is the plugin running?');
   ws.onmessage=e=>{ let m; try{ m=JSON.parse(e.data); }catch{ return; }
     const raw=String(e.data).slice(0,52);
     route('ws:'+(m.key||m.type), raw, 'WS', ()=>{
-      if(m.type==='rotate'){ const d=m.dir<0?-1:1; lastFired='rotate '+(d>0?'CW':'CCW'); detents+=d; spin(d*16); hud(); return 'rotate'; }
+      if(m.type==='rotate'){ const d=m.dir<0?-1:1; lastFired='rotate '+(d>0?'CW':'CCW'); spin(d*16); return 'rotate'; }
       if(m.type==='press'){ press(); return 'press'; }
       if(m.type==='button'){ const i=KEYMAP[m.key]; if(i!=null){ lastFired=KEYS[i].label; flash(i); hud(); } return 'button '+(m.key||''); }
       return m.type||'?';
