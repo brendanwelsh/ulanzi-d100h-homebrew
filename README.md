@@ -48,10 +48,10 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 
 ## Gallery
-The D100H **in action** — knob spins, the 7 keys light up (rendered straight from the layered
-[dial-skin](docs/dial-skin.md) assets, RGB keys and all):
+The D100H **in action** — knob spins, the 7 keys light up white on press (rendered straight from the
+layered [dial-skin](docs/dial-skin.md) assets; transparent background):
 
-<p><img src="docs/images/d100h-dial-demo.gif" alt="Ulanzi D100H — knob spinning, keys lighting up in RGB" width="300"></p>
+<p><img src="docs/images/d100h-dial-demo.gif" alt="Ulanzi D100H — knob spinning, keys lighting up on press" width="300"></p>
 
 Transparent-background PNGs of the dial (in [`docs/images/`](docs/images)) — handy for slides, docs, or an
 on-screen skin:
