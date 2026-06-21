@@ -38,11 +38,14 @@
   .dial-knob.spin { filter:brightness(1.3) drop-shadow(0 0 12px rgba(255,255,255,.85)); }
   .dkey { position:absolute; transform:translate(-50%,-50%); background:transparent; border:0; padding:0; cursor:pointer; border-radius:10px; touch-action:none; }
   .dkey:hover { background:rgba(255,255,255,.07); }
-  .dlabel { position:absolute; transform:translate(-50%,-50%); background:var(--chip); border:1px solid var(--line); border-radius:7px;
-            padding:3px 7px; font-size:11px; font-weight:600; white-space:nowrap; pointer-events:none; text-align:center; }
-  .dlabel small { display:block; font-weight:400; color:var(--mut); font-size:9px; }
-  #hud { text-align:center; color:var(--ink); font:13px/1.6 ui-monospace,Menlo,Consolas,monospace; margin:0 12px 22px; }
-  #hud b { color:var(--accent); font-weight:600; }
+  .dlabel { position:absolute; transform:translate(-50%,-50%); background:#272c37; border:1px solid #3c4456; border-radius:9px;
+            padding:4px 9px; font-size:11px; font-weight:600; white-space:nowrap; pointer-events:none; text-align:center;
+            color:#f1f3f7; box-shadow:0 3px 10px rgba(0,0,0,.5); }
+  .dlabel small { display:block; font-weight:500; color:#aab1bf; font-size:9px; margin-top:1px; }
+  #hud { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:2px 12px 24px; }
+  #hud .stat { background:var(--chip); border:1px solid #313847; border-radius:999px; padding:6px 13px;
+               font:12px/1 ui-monospace,Menlo,Consolas,monospace; color:var(--mut); white-space:nowrap; }
+  #hud .stat b { color:var(--ink); font-weight:600; }
   .panel { max-width:560px; margin:6px auto 12px; padding:0 18px; }
   .panel .head { display:flex; justify-content:space-between; align-items:center; gap:8px; color:var(--mut); font-size:12px; margin-bottom:4px; }
   #log { background:var(--chip); border:1px solid var(--line); border-radius:8px; padding:8px 10px; height:148px; overflow:auto;
@@ -132,7 +135,10 @@ const connected = () => statusEl.classList.add('ok');
 
 let angle=0, revTotal=0, spins=0, flips=0, lastDir=0, lastFired='—', spinT;
 function hud(){ const a=(((Math.round(angle)%360)+360)%360);
-  hudEl.innerHTML = `angle <b>${a}&deg;</b>     full spins <b>${spins}</b>     direction changes <b>${flips}</b>     last: <b>${lastFired}</b>`; }
+  hudEl.innerHTML = `<span class="stat">angle <b>${a}&deg;</b></span>`
+    + `<span class="stat">full spins <b>${spins}</b></span>`
+    + `<span class="stat">direction changes <b>${flips}</b></span>`
+    + `<span class="stat">last <b>${lastFired}</b></span>`; }
 function applyAngle(){ knob.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`; knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),220); hud(); }
 function spin(delta){ angle+=delta; revTotal+=Math.abs(delta); spins=Math.floor(revTotal/360);
   if(Math.abs(delta)>=4){ const d=delta>0?1:-1; if(lastDir && d!==lastDir) flips++; lastDir=d; } applyAngle(); }
@@ -151,7 +157,7 @@ KEYS.forEach((k,i)=>{
   b.addEventListener('pointerdown',e=>{ e.preventDefault(); lastFired=k.label; hud(); flash(i); });
   device.append(b);
   const lab=document.createElement('div'); lab.className='dlabel'; lab.innerHTML=`${k.label}<small>${k.sub}</small>`;
-  lab.style.left=(k.side==='L'?-9:k.side==='R'?109:k.cx)+'%'; lab.style.top=(k.side==='T'?-10:k.cy)+'%';
+  lab.style.left=(k.side==='L'?-11:k.side==='R'?111:k.cx)+'%'; lab.style.top=(k.side==='T'?-13:k.cy)+'%';
   device.append(lab);
 });
 
