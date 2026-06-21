@@ -18,10 +18,17 @@ There is also a separate **device-switch button** (not one of the 7 macro keys):
 up-to-3 paired Bluetooth devices; press-and-hold 3 s enters pairing mode (status LED 1/2/3 shows the active device).
 
 ## Indicator lights (LED meanings)
-> **Source: the official Ulanzi D100H manual** (the Manuals+ transcriptions + the official PDF linked in
-> [resources.md](resources.md)), with the charge colour **confirmed red on our unit**.
+> **What the RED light means → the device is *charging*.** This is the one LED meaning the manual states
+> directly, and it's **confirmed red on our unit**.
 
-**What the red light means → the device is charging.** The charge LED is the clearest colour indicator:
+**Sourcing.** The Ulanzi **product page** has *no* LED information at all, so the manual is the only
+source. The charge-status meanings come from the official D100H manual as transcribed by Manuals+ /
+device.report (see [resources.md](resources.md)):
+- [Manuals+ — "Dial Editing Assistant"](https://manuals.plus/m/ec60f205df9b84aaf59fc3323080ebc1ca4ce921e3417d14f5b93a2bdb36ab03) ·
+  [Manuals+ — "Creative Controller" slug](https://manuals.plus/ulanzi/d100h-dial-creative-controller-manual) ·
+  [device.report copy](https://device.report/manual/19788810)
+- These agree: **red = charging, green = charge complete**, the light **flashes** in pairing mode and
+  goes **off** once connected.
 
 | LED state | Meaning |
 |---|---|
@@ -31,6 +38,12 @@ up-to-3 paired Bluetooth devices; press-and-hold 3 s enters pairing mode (status
 | Indicator **off** | Connected to a host successfully |
 | Status LED **1 / 2 / 3** | Which of the up-to-3 paired devices is currently active (see the device-switch button above) |
 | Status LED **[1] flashing** on power-up after the reset combo | **Factory reset** complete (see below) |
+
+**Candidate / caveat — red vs. orange.** At least one manual transcription describes the *charging*
+colour as **orange** rather than red. On our unit it reads clearly **red**, and most sources say red, so
+we treat **red = charging** as canonical and note orange as a likely just-a-wording/colour-perception
+variant (warm amber can read as either). Either way the *meaning* is the same: a **steady warm colour
+(red/orange) = charging; steady green = done.**
 
 Note the **flashing** states are pairing / factory-reset, *not* charging — a **steady** colour is the
 battery/charge indicator, so a blinking light is never the charge state.
