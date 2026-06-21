@@ -49,6 +49,9 @@
   .dlabel.T { bottom:calc(100% + 12px); transform:translateX(-50%); }  /* fully above the dial */
   .dlabel .fn { font-size:11px; font-weight:600; color:#f1f3f7; }
   .dlabel .kb { font-size:9px; font-weight:500; color:#aab1bf; }
+  #legend { display:none; flex-wrap:wrap; gap:7px; justify-content:center; max-width:94vw; margin:2px auto 18px; }
+  #legend .lg { background:#272c37; border:1px solid #3c4456; border-radius:8px; padding:5px 10px; font-size:11px; font-weight:600; color:#f1f3f7; box-shadow:0 2px 6px rgba(0,0,0,.4); }
+  #legend .lg i { color:#aab1bf; font-style:normal; font-weight:500; font-size:9px; margin-left:4px; }
   #hud { text-align:center; color:var(--ink); font:13px/1.6 ui-monospace,Menlo,Consolas,monospace; margin:2px 12px 24px; }
   #hud b { color:var(--accent); font-weight:600; }
   .panel { max-width:560px; margin:6px auto 12px; padding:0 18px; }
@@ -60,15 +63,16 @@
   footer code { background:var(--chip); padding:1px 5px; border-radius:4px; }
   a { color:var(--accent); }
   @media (max-width:560px){
-    .dial-device { max-width:46vw; }
-    .dlabel { padding:7px 10px; }
-    .dlabel .fn { font-size:10px; } .dlabel .kb { font-size:8.5px; }
+    .stage { padding:22px 12px 26px; }
+    .dial-device { max-width:78vw; }
+    .dlabel { display:none; }   /* floating labels are desktop-only */
+    #legend { display:flex; }   /* mobile shows a compact legend below the dial */
     input.url { width:150px; }
   }
 </style>
 </head>
 <body>
-<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 12</div>
+<div style="position:fixed; bottom:5px; right:8px; font:11px/1 ui-monospace,Menlo,Consolas,monospace; color:#4a5161; z-index:9;">build 13</div>
 <header>
   <h1>Ulanzi D100H, interactive dial</h1>
   <p>Drag the knob to spin. Tap a key or press <b>1&ndash;7</b>. <b>Connect</b> the real dial, or <b>Calibrate</b> to learn its codes.</p>
@@ -91,6 +95,8 @@
 </div>
 
 <div class="stage"><div class="dial-device" id="device"></div></div>
+
+<div id="legend"></div>
 
 <div id="hud"></div>
 
@@ -164,6 +170,7 @@ KEYS.forEach((k,i)=>{
   if(k.side==='T') lab.style.left=k.cx+'%'; else lab.style.top=k.cy+'%';
   device.append(lab);
 });
+document.getElementById('legend').innerHTML = KEYS.map(k=>`<span class="lg">${k.label}<i>${k.sub}</i></span>`).join('');
 
 // knob: rotary drag (mouse + touch); tap = press
 let drag=false, lastA=0, cx0=0, cy0=0, moved=false;
