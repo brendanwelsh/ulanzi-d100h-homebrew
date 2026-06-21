@@ -6,6 +6,9 @@
 
 <p align="center"><img src="docs/images/d100h-layout.gif" alt="Ulanzi D100H default (offline) layout" width="460"></p>
 
+<p align="center"><b><a href="https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html">▶&nbsp; Try the live interactive dial</a></b><br>
+spin the knob, light the keys, or connect your real D100H over WebHID and watch it sync.</p>
+
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
 > 🌀 **Also in this repo — an on-screen D100H you can drop into your own app.** Like the controller
