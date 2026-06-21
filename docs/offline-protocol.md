@@ -25,7 +25,7 @@ Undo, Redo* — which matches the above (3 media buttons + 4 editing shortcuts +
 The D100H has **7 keys arranged around the dial** — 3 across the top, and 4 on the sides (2 left,
 2 right) — plus the dial in the middle:
 
-![D100H default offline layout](images/d100h-layout.png)
+![D100H default offline layout](images/d100h-layout.gif)
 
 ```text
         [ Prev ]  [ Play/Pause ]  [ Next ]      top 3 = media transport (HID-readable)

@@ -4,7 +4,7 @@
 > actually works at the HID level, how Ulanzi Studio stores its config, and the gotchas you'll hit
 > building your own integration. Unofficial; gathered by poking at a real unit on Windows 11.
 
-<p align="center"><img src="docs/images/d100h-layout.png" alt="Ulanzi D100H default (offline) layout" width="520"></p>
+<p align="center"><img src="docs/images/d100h-layout.gif" alt="Ulanzi D100H default (offline) layout" width="460"></p>
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
