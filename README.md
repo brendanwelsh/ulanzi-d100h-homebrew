@@ -4,21 +4,28 @@
 > actually works at the HID level, how Ulanzi Studio stores its config, and the gotchas you'll hit
 > building your own integration. Unofficial; gathered by poking at a real unit on Windows 11.
 
-<p align="center"><img src="docs/images/d100h-layout.gif" alt="Ulanzi D100H default (offline) layout" width="460"></p>
+<p align="center">
+  <img src="docs/images/d100h-dial-top.png"  alt="Ulanzi D100H — top view"    height="150">
+  <img src="docs/images/d100h-dial-iso.png"  alt="Ulanzi D100H — angled view" height="150">
+  <img src="docs/images/d100h-dial-knob.png" alt="Ulanzi D100H — knob"        height="150">
+  <img src="docs/images/d100h-dial-demo.gif" alt="Ulanzi D100H in action — knob spins, keys flash" height="150">
+</p>
 
 <p align="center"><b><a href="https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html">▶&nbsp; Try the live interactive dial</a></b><br>
-spin the knob, light the keys, or connect your real D100H over WebHID and watch it sync.</p>
+Spin the knob, light the keys, or connect your real D100H over WebHID and watch it sync.<br>
+<sub>To drive it from the real dial, <b>close Ulanzi Studio first</b> — while it's running the dial is in online mode (Studio handles the input) and the page won't see it.</sub></p>
 
 _Layout + full specs confirmed against the [official Ulanzi manual](docs/specs.md)._
 
 > 🌀 **Also in this repo — an on-screen D100H you can drop into your own app.** A picture of the dial
 > that **moves like the real one** — turn the knob and
 > the on-screen knob spins; press a key and it lights up. The image layers + how-to are in
-> **[docs/dial-skin.md](docs/dial-skin.md)**. (The diagram + GIFs above were built from those layers with
+> **[docs/dial-skin.md](docs/dial-skin.md)**. (The dial images + GIF above were built from those layers with
 > [`rembg`](https://github.com/danielgatis/rembg) for background removal + [Pillow](https://python-pillow.org).)
 >
 > ▶ **Try it live:** [interactive dial viewer](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html) —
-> drag the knob, click keys, or hit **Connect** to drive it from your real D100H over WebHID (Chrome/Edge).
+> drag the knob, click keys, or hit **Connect** to drive it from your real D100H over WebHID (Chrome/Edge;
+> close Ulanzi Studio first so it isn't holding the dial).
 
 ## The device & official links
 - 🛒 **Ulanzi D100H Dial Creative Controller** — product page / specs / where to buy:
@@ -63,17 +70,10 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/dial-viewer.html](docs/dial-viewer.html)** — interactive page: drive the dial with mouse/keyboard or your real D100H (WebHID) · [live](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html)
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 
-## Gallery
-Transparent dial PNGs (in [`docs/images/`](docs/images)) — and the dial **in action** (knob spins, keys flash white):
-
-<p align="center">
-  <img src="docs/images/d100h-dial-top.png"  alt="D100H — top"       height="150">
-  <img src="docs/images/d100h-dial-iso.png"  alt="D100H — angled"    height="150">
-  <img src="docs/images/d100h-dial-knob.png" alt="D100H — iso"       height="150">
-  <img src="docs/images/d100h-dial-demo.gif" alt="D100H — in action" height="150">
-</p>
-
-Interactive version — the spin/press method + assets: **[docs/dial-skin.md](docs/dial-skin.md)** (from [chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
+## Assets
+The transparent dial PNGs shown at the top (knob spins, keys flash white) live in
+[`docs/images/`](docs/images). The interactive spin/press method + layered assets are in
+**[docs/dial-skin.md](docs/dial-skin.md)** (from [chumthesizer](https://github.com/brendanwelsh/chumthesizer)).
 
 ## More from the author
 Other Ulanzi projects by [@brendanwelsh](https://github.com/brendanwelsh):

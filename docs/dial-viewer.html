@@ -111,6 +111,8 @@
      pick <code>Dial_Lite</code> when prompted. <b>Calibrate</b> walks each control so the page learns your unit's
      codes (saved in your browser). Caveats (the device's):</p>
   <ul>
+    <li><b>Close Ulanzi Studio first.</b> While it's running the dial is in online mode (Studio handles the
+        input), so the page won't see the default volume/media codes it listens for.</li>
     <li>The dial's rotate <i>is</i> a real volume key, so connecting will also move your system volume.</li>
     <li>Over WebHID only the <b>dial and 3 media keys</b> are readable (Windows hides Ctrl-C/V/Z/Y). For all 7,
         forward events from a UlanziDeck plugin to the <b>WebSocket</b> box (see <a href="plugin-sdk.md">plugin-sdk.md</a>).</li>
