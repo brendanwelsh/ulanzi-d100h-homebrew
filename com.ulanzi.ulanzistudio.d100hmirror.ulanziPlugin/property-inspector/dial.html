@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+  <title>D100H Mirror — Dial</title>
+  <link rel="stylesheet" href="../libs/css/udpi.css">
+  <style> .udpi-item-label { width: 140px; } .hint { color:#9aa0ad; font-size:11px; padding:2px 6px 8px; } </style>
+</head>
+<body>
+  <div class="udpi-wrapper hidden">
+    <form id="property-inspector">
+      <div class="hint">The knob always spins the on-screen dial and mirrors its press. Defaults below match the factory dial (turn = volume, press = mute).</div>
+
+      <div class="udpi-heading">Turn</div>
+      <div class="udpi-item">
+        <div class="udpi-item-label">On rotate</div>
+        <select class="udpi-item-value select" id="rotateDo" name="rotateDo">
+          <option value="volume" selected>Volume up / down</option>
+          <option value="media">Media: next / previous</option>
+          <option value="arrows">Arrow keys: right / left</option>
+          <option value="none">Nothing (mirror only)</option>
+        </select>
+      </div>
+
+      <div class="udpi-heading">Press</div>
+      <div class="udpi-item">
+        <div class="udpi-item-label">On press</div>
+        <select class="udpi-item-value select" id="pressDo" name="pressDo">
+          <option value="mute" selected>Mute</option>
+          <option value="playpause">Play / Pause</option>
+          <option value="hotkey">Hotkey</option>
+          <option value="none">Nothing (mirror only)</option>
+        </select>
+      </div>
+
+      <div class="udpi-item" id="row_presshotkey" style="display:none">
+        <div class="udpi-item-label">Hotkey</div>
+        <input class="udpi-item-value" type="text" id="pressHotkey" name="pressHotkey" placeholder="e.g. Ctrl+Alt+M  ·  F13">
+      </div>
+
+      <div class="hint">Note: the knob <b>press</b> only registers while the D100H is plugged into USB.</div>
+    </form>
+  </div>
+
+  <script src="../libs/js/constants.js"></script>
+  <script src="../libs/js/eventEmitter.js"></script>
+  <script src="../libs/js/timers.js"></script>
+  <script src="../libs/js/utils.js"></script>
+  <script src="../libs/js/ulanzideckApi.js"></script>
+  <script src="./dial.js"></script>
+</body>
+</html>

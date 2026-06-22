@@ -56,6 +56,14 @@ Use **`uuid`** for the action type. Simpler still: each controller type maps to 
 is always your keypad action and `onDialRotate` / `onDialDown` are always your encoder action — you
 often don't need to branch on the action type at all.
 
+## A worked example in this repo
+[**D100H Mirror**](companion-plugin.md) (`com.ulanzi.ulanzistudio.d100hmirror.ulanziPlugin/`) is a
+complete, installable plugin built to these notes: an **Encoder** action on the dial and a **Keypad**
+action on the keys, each one (a) broadcasting to the on-screen viewer over a localhost WebSocket and
+(b) replaying the control's real function (hotkey / media / volume / text). It vendors `plugin-common-node`
+as `ulanzi-api/` and `plugin-common-html` under `libs/`, with `ws` bundled for drop-in install. See
+[companion-plugin.md](companion-plugin.md).
+
 ## Reference SDK
 - `UlanziTechnology/UlanziDeckPlugin-SDK` (manifest reference, demo plugins, a browser simulator)
 - `UlanziTechnology/plugin-common-node` (Node main-service SDK) and `plugin-common-html` (PI SDK)

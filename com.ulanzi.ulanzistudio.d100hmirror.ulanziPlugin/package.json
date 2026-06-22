@@ -1,0 +1,11 @@
+{
+  "name": "d100h-mirror",
+  "version": "1.0.0",
+  "description": "UlanziDeck companion plugin: mirrors the D100H dial + keys to the on-screen viewer over a localhost WebSocket while Ulanzi Studio runs, and replays each control's configured function (hotkey / media / volume / text).",
+  "type": "module",
+  "private": true,
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

@@ -55,7 +55,9 @@ behavior. This repo collects everything I found the hard way so you don't have t
 4. **So a no-app, HID-only homebrew tops out at: the dial + 3 buttons, and it'll move your volume.**
    For all 7 buttons cleanly you need Studio running (a plugin, or a hotkey remap + a listener).
 5. **Plugins work.** A third-party UlanziDeck plugin's actions show up in Studio's action list and bind
-   to the D100H's dial + keys fine. That's the clean path to custom behavior.
+   to the D100H's dial + keys fine. That's the clean path to custom behavior. This repo ships one —
+   **[D100H Mirror](docs/companion-plugin.md)** — that mirrors the dial + all 7 keys to the on-screen
+   viewer *while Studio is running*, and still replays each control's real function.
 6. **The dial *press* only registers while plugged into USB** (charging or not — a full battery doesn't
    help). Rotation works fine wirelessly; the click sends nothing over Bluetooth alone. So don't build a
    battery-only homebrew around knob-press. *(Observed on one unit — see [docs/hardware.md](docs/hardware.md).)*
@@ -65,6 +67,7 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/offline-protocol.md](docs/offline-protocol.md)** — exact default codes + report formats (sniff output)
 - **[docs/ulanzi-studio.md](docs/ulanzi-studio.md)** — online mode, where/how Studio saves bindings, the saving gotchas
 - **[docs/plugin-sdk.md](docs/plugin-sdk.md)** — writing a UlanziDeck plugin + the SDK pitfalls
+- **[docs/companion-plugin.md](docs/companion-plugin.md)** — **D100H Mirror**, a ready-to-install plugin that mirrors the dial + keys to the viewer while Studio runs (install / bind / configure)
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
 - **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen interactive D100H (knob spins, keys light up) — assets + method
 - **[docs/dial-viewer.html](docs/dial-viewer.html)** — interactive page: drive the dial with mouse/keyboard or your real D100H (WebHID) · [live](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html)

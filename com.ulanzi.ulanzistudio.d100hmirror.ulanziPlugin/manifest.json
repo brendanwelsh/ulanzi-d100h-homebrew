@@ -1,0 +1,50 @@
+{
+  "Author": "brendanwelsh",
+  "Name": "D100H Mirror",
+  "Description": "Mirror the D100H dial + keys to the on-screen viewer (over a localhost WebSocket) while Ulanzi Studio runs, and replay each control's real function (hotkey / media / volume / text).",
+  "Icon": "assets/icons/plugin.svg",
+  "Version": "1.0.0",
+  "Category": "D100H Mirror",
+  "CategoryIcon": "assets/icons/category.svg",
+  "CodePath": "plugin/app.js",
+  "Type": "JavaScript",
+  "PrivateAPI": true,
+  "UUID": "com.ulanzi.ulanzistudio.d100hmirror",
+  "Actions": [
+    {
+      "Name": "Dial (mirror + replay)",
+      "Icon": "assets/icons/dial.svg",
+      "PropertyInspectorPath": "property-inspector/dial.html",
+      "state": 0,
+      "States": [
+        { "Name": "Dial", "Image": "assets/icons/dial.svg" }
+      ],
+      "Tooltip": "Bind to the D100H knob: mirrors rotate/press to the viewer and replays volume / media / hotkey.",
+      "UUID": "com.ulanzi.ulanzistudio.d100hmirror.dial",
+      "SupportedInMultiActions": false,
+      "Controllers": ["Encoder"],
+      "Devices": []
+    },
+    {
+      "Name": "Key (mirror + replay)",
+      "Icon": "assets/icons/key.svg",
+      "PropertyInspectorPath": "property-inspector/key.html",
+      "state": 0,
+      "States": [
+        { "Name": "Key", "Image": "assets/icons/key.svg" }
+      ],
+      "Tooltip": "Bind to any D100H key: lights the matching key on the viewer and replays a hotkey / media key / volume / text.",
+      "UUID": "com.ulanzi.ulanzistudio.d100hmirror.key",
+      "SupportedInMultiActions": false,
+      "Controllers": ["Keypad"],
+      "Devices": []
+    }
+  ],
+  "OS": [
+    { "Platform": "windows", "MinimumVersion": "10" },
+    { "Platform": "mac", "MinimumVersion": "10.11" }
+  ],
+  "Software": {
+    "MinVersion": "2.1.4"
+  }
+}

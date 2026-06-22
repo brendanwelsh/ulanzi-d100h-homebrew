@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover" />
+  <title>D100H Mirror — Key</title>
+  <link rel="stylesheet" href="../libs/css/udpi.css">
+  <style> .udpi-item-label { width: 140px; } .hint { color:#9aa0ad; font-size:11px; padding:2px 6px 8px; } </style>
+</head>
+<body>
+  <div class="udpi-wrapper hidden">
+    <form id="property-inspector">
+      <div class="hint">This key always lights the matching key on the dial-viewer. Pick what it should also <b>do</b> (its real job):</div>
+
+      <div class="udpi-item">
+        <div class="udpi-item-label">Also do</div>
+        <select class="udpi-item-value select" id="keyDo" name="keyDo">
+          <option value="none" selected>Nothing (mirror only)</option>
+          <option value="hotkey">Hotkey</option>
+          <option value="media">Media key</option>
+          <option value="volume">Volume</option>
+          <option value="text">Type text</option>
+        </select>
+      </div>
+
+      <div class="udpi-item" id="row_hotkey" style="display:none">
+        <div class="udpi-item-label">Hotkey</div>
+        <input class="udpi-item-value" type="text" id="keyHotkey" name="keyHotkey" placeholder="e.g. Ctrl+C  ·  Ctrl+Shift+Z  ·  F13">
+      </div>
+
+      <div class="udpi-item" id="row_media" style="display:none">
+        <div class="udpi-item-label">Media key</div>
+        <select class="udpi-item-value select" id="keyMedia" name="keyMedia">
+          <option value="playpause" selected>Play / Pause</option>
+          <option value="next">Next track</option>
+          <option value="prev">Previous track</option>
+          <option value="stop">Stop</option>
+        </select>
+      </div>
+
+      <div class="udpi-item" id="row_volume" style="display:none">
+        <div class="udpi-item-label">Volume</div>
+        <select class="udpi-item-value select" id="keyVolume" name="keyVolume">
+          <option value="up" selected>Volume up</option>
+          <option value="down">Volume down</option>
+          <option value="mute">Mute</option>
+        </select>
+      </div>
+
+      <div type="textarea" class="udpi-item alignTop" id="row_text" style="display:none">
+        <div class="udpi-item-label">Text</div>
+        <span class="udpi-item-value textarea">
+          <textarea type="textarea" class="autosize" id="keyText" name="keyText" placeholder="Typed when the key is pressed"></textarea>
+        </span>
+      </div>
+
+      <div class="hint" id="hint_text" style="display:none">Tip: <code>{ENTER}</code> and <code>{TAB}</code> are inserted as real keypresses.</div>
+    </form>
+  </div>
+
+  <script src="../libs/js/constants.js"></script>
+  <script src="../libs/js/eventEmitter.js"></script>
+  <script src="../libs/js/timers.js"></script>
+  <script src="../libs/js/utils.js"></script>
+  <script src="../libs/js/ulanzideckApi.js"></script>
+  <script src="./key.js"></script>
+</body>
+</html>

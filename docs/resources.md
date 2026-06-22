@@ -15,6 +15,10 @@
 - **HTML / Property-Inspector library:** https://github.com/UlanziTechnology/plugin-common-html
 - Built on the "Ulanzi JS Plugin Development Protocol" (v2.1.x at time of writing). The `manifest.md`
   in the SDK repo is the authoritative field reference.
+- **Worked example (this repo):** [`com.ulanzi.ulanzistudio.d100hmirror.ulanziPlugin`](../com.ulanzi.ulanzistudio.d100hmirror.ulanziPlugin) —
+  the **D100H Mirror** plugin (Encoder + Keypad actions, WS broadcaster + key replay). It vendors
+  `plugin-common-node` (as `ulanzi-api/`) and `plugin-common-html` (under `libs/`). Build/usage notes:
+  [companion-plugin.md](companion-plugin.md).
 - **Plugin marketplace / Workshop** — browse every published plugin (the best way to see what exists
   today and what's possible), and where finished plugins are distributed: https://ugc.ulanzistudio.com/home/1
 - **Submit a plugin / dev inquiries:** `service@ulanzi.com`. The SDK is Apache-2.0, so you may build and
