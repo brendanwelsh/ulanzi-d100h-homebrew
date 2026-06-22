@@ -85,13 +85,13 @@ The mapping is saved in your browser.
 
 ## Use it as an OBS overlay
 
-[`docs/dial-obs.html`](dial-obs.html) is a clean, chrome-free version of the dial — no header, buttons,
-labels, or log, on a **transparent background** — meant to be a live on-stream overlay. It
-**auto-connects** to the plugin bridge (and reconnects on its own), since an OBS Browser source can't
-click a button.
+[`docs/dial-browser-source.html`](dial-browser-source.html) is a clean, chrome-free version of the dial —
+no header, buttons, labels, or log, on a **transparent background** — meant to be a live on-stream
+overlay. It **auto-connects** to the plugin bridge (and reconnects on its own), since an OBS Browser
+source can't click a button.
 
-1. In OBS: **Sources → + → Browser**, point **Local file** at `dial-obs.html` (or use the Pages URL),
-   and set the width/height you want — the dial scales to fit.
+1. In OBS: **Sources → + → Browser**, point **Local file** at `dial-browser-source.html` (or use the
+   Pages URL), and set the width/height you want — the whole dial scales to fit inside it.
 2. Keep Studio + the plugin running; the dial animates as you turn/press.
 
 Query params (optional): `?ws=ws://127.0.0.1:48907` (bridge URL), `?w=420` (pin width in px),
