@@ -71,6 +71,7 @@ behavior. This repo collects everything I found the hard way so you don't have t
 - **[docs/resources.md](docs/resources.md)** — official docs, the plugin SDK, the forum, related open-source projects
 - **[docs/dial-skin.md](docs/dial-skin.md)** — on-screen interactive D100H (knob spins, keys light up) — assets + method
 - **[docs/dial-viewer.html](docs/dial-viewer.html)** — interactive page: drive the dial with mouse/keyboard or your real D100H (WebHID) · [live](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-viewer.html)
+- **[docs/dial-obs.html](docs/dial-obs.html)** — the clean, transparent overlay version for **OBS** (no chrome, auto-connects to the plugin) · [live](https://brendanwelsh.github.io/ulanzi-d100h-homebrew/dial-obs.html)
 - **[tools/sniff.js](tools/sniff.js)** — a tiny `node-hid` script to dump what *your* unit sends
 
 ## Assets

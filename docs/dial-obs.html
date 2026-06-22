@@ -1,0 +1,92 @@
+<!doctype html>
+<!-- Clean on-screen Ulanzi D100H for OBS (or any browser source).
+     No chrome: just the dial on a transparent background. Auto-connects to the
+     D100H Mirror plugin's WebSocket and animates live (knob spins, keys flash,
+     press pulses). The labeled dial-viewer.html is the tester; this is the overlay.
+
+     OBS: add a Browser source pointing at this file (or the GitHub Pages URL),
+     set the width/height you want — the dial scales to fit. Background is
+     transparent by default.
+
+     Query params (all optional):
+       ?ws=ws://127.0.0.1:48907   plugin bridge URL (default shown)
+       ?w=420                     pin the dial width in px (default: fill the source)
+       ?bg=%230f1115              page background for previewing (default: transparent)
+     Needs images/dial-skin/* alongside it. Honors a Calibrate map saved by
+     dial-viewer.html (same origin) so keys land on the right spot. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>D100H — OBS overlay</title>
+<style>
+  html,body { margin:0; height:100%; background:transparent; overflow:hidden; }
+  body { display:flex; align-items:center; justify-content:center; }
+  .dial-device { position:relative; line-height:0; user-select:none; }
+  .dial-img { width:100%; height:auto; display:block; -webkit-user-drag:none; filter:drop-shadow(0 10px 22px rgba(0,0,0,.45)); }
+  .dwhite { position:absolute; inset:0; width:100%; height:auto; opacity:0; pointer-events:none;
+            transition:opacity .04s ease; filter:drop-shadow(0 0 8px rgba(255,255,255,.7)); }
+  .dwhite.on { opacity:1; }
+  .dial-knob { position:absolute; transform:translate(-50%,-50%); transform-origin:50% 50%;
+               -webkit-user-drag:none; border-radius:50%; transition:filter .2s; }
+  .dial-knob.spin { filter:brightness(1.3) drop-shadow(0 0 12px rgba(255,255,255,.85)); }
+  /* dim very slightly until the plugin bridge is connected (visible in OBS preview, subtle on stream) */
+  .dial-device.off { opacity:.55; transition:opacity .3s; }
+</style>
+</head>
+<body>
+<div class="dial-device off" id="device"></div>
+
+<script>
+const A = 'images/dial-skin/';
+const KNOB = { cx:50.95, cy:61.58, dia:57.95 };
+const NKEYS = 7;
+// default WS row_col -> on-screen key index (same as the tester; Calibrate overrides per-unit)
+const KEYMAP = { '0_0':0,'0_1':1,'0_3':2,'0_4':3,'0_5':4,'0_7':5,'0_8':6 };
+
+const q = new URLSearchParams(location.search);
+const WSURL = q.get('ws') || 'ws://127.0.0.1:48907';
+const widthPx = parseInt(q.get('w'), 10);
+if (q.get('bg')) document.body.style.background = q.get('bg');
+
+const device = document.getElementById('device');
+device.style.width = (widthPx > 0 ? widthPx + 'px' : 'min(96vw, 96vh)');
+
+const base = new Image(); base.src=A+'ulanzi-dial.png'; base.className='dial-img'; base.alt='Ulanzi D100H'; base.draggable=false; device.append(base);
+const whites = Array.from({length:NKEYS}, (_,i)=>{ const w=new Image(); w.src=A+`white-${i+1}.png`; w.className='dwhite'; w.draggable=false; device.append(w); return w; });
+const knob = new Image(); knob.src=A+'ulanzi-knob.png'; knob.className='dial-knob'; knob.draggable=false;
+knob.style.left=KNOB.cx+'%'; knob.style.top=KNOB.cy+'%'; knob.style.width=KNOB.dia+'%'; device.append(knob);
+
+let angle=0, spinT;
+function applyAngle(){ knob.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`;
+  knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),220); }
+function spin(delta){ angle+=delta; applyAngle(); }
+function press(){ knob.classList.add('spin'); clearTimeout(spinT); spinT=setTimeout(()=>knob.classList.remove('spin'),160); }
+function flash(i){ const w=whites[i]; if(w){ w.classList.add('on'); setTimeout(()=>w.classList.remove('on'),180); } }
+
+// honor a Calibrate map saved by dial-viewer.html (same origin), else defaults
+let learned = {}; try { learned = JSON.parse(localStorage.getItem('d100h-map')||'{}'); } catch {}
+function applyAct(L){ if(L.t==='key') flash(L.i); else if(L.t==='rot') spin((L.dir||1)*16); else press(); }
+
+function handle(m){
+  const L = learned['ws:'+(m.key||m.type)];
+  if(L){ applyAct(L); return; }
+  if(m.type==='rotate'){ spin((m.dir<0?-1:1)*16); }
+  else if(m.type==='press'){ press(); }
+  else if(m.type==='button'){ const i=KEYMAP[m.key]; if(i!=null) flash(i); }
+}
+
+// auto-connect + auto-reconnect (OBS browser sources can't click a button)
+let ws;
+function connect(){
+  try { ws = new WebSocket(WSURL); } catch { return setTimeout(connect, 2000); }
+  ws.onopen   = ()=> device.classList.remove('off');
+  ws.onmessage= e => { let m; try{ m=JSON.parse(e.data); }catch{ return; } handle(m); };
+  ws.onclose  = ()=>{ device.classList.add('off'); setTimeout(connect, 1500); };
+  ws.onerror  = ()=>{ try{ ws.close(); }catch{} };
+}
+connect();
+</script>
+</body>
+</html>
