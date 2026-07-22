@@ -7,17 +7,15 @@
     Bluetooth connection, the dial still rotates and presses but gives **no haptic buzz** — the motorised
     feedback is gated on the BLE link being up. *(Observed first-hand. The haptic linear motor is also the
     device's biggest power draw — see the battery-life note in [specs.md](specs.md).)*
-  - **⚠️ Known limitation — the dial *press* (click) only registers while the USB-C cable is plugged in.**
-    Over Bluetooth alone the rotation works normally, but pressing the knob sends **nothing** to the host —
-    and a full battery does **not** fix it (tested at 100% charge). Plug in USB-C and the press starts
-    registering immediately; unplug and it stops. *(Observed first-hand on our unit — rotation is unaffected,
-    only the press is gated.)*
-    - **This does not mean USB is a data path.** USB-C is still charge-only (no wired HID — see below); the
-      press event still travels over the **Bluetooth** HID Consumer interface. What appears to be gated is
-      the device *emitting* the press at all unless it's receiving external power. The exact cause (a
-      power/firmware quirk) is **not** bench-confirmed, and this is one unit — it may be unit- or
-      firmware-specific. If your homebrew relies on the press (e.g. press = play/stop, open/close a viewer),
-      assume it needs USB power until you've confirmed otherwise on your own unit.
+  - **The dial *press* (click) works over Bluetooth, exactly like rotation.** USB-C carries **no input**
+    (it is charge-only — see below), so the press is **not** gated on USB power: both rotate and press
+    arrive over the BLE HID link whether or not the cable is plugged in. **Battery-only press features are
+    fine to build.**
+    - *Correction:* an earlier version of this note claimed the press only registered while USB-C was
+      connected. That was a single-unit observation made on a host whose Bluetooth radio (a MediaTek
+      MT7922) was faulty and intermittently dropping input — a property of that **broken radio**, not of
+      the dial. It has been retracted. If you want the exact HID interface the press lands on (Consumer
+      Control vs the reserved Keyboard collection), re-run `tools/sniff.js` on a host with healthy Bluetooth.
 - Pairs to up to 3 hosts at once; a switch on the underside cycles the paired device.
 - **USB-C is charge-only — there is no wired data mode.** It talks to the host purely as a Bluetooth
   HID peripheral. The OS surfaces it through the normal HID stack, so `node-hid` / `hidapi` can open the
