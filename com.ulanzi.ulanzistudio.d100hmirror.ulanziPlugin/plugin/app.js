@@ -64,8 +64,12 @@ function ksSpawn() {
       ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", PS1],
       { windowsHide: true, stdio: ["pipe", "ignore", "ignore"] }
     );
-    ks.on("exit", () => { ks = null; });
-    ks.on("error", (e) => { log("keysender error:", e.message); ks = null; });
+    const me = ks;
+    ks.on("exit", () => { if (ks === me) ks = null; });
+    ks.on("error", (e) => { log("keysender error:", e.message); if (ks === me) ks = null; });
+    // writing to a helper that just died raises EPIPE on stdin asynchronously; without a
+    // listener that 'error' event crashes the plugin. Drop it so the next press respawns.
+    ks.stdin.on("error", (e) => { log("keysender pipe error:", e.message); if (ks === me) ks = null; });
   } catch (e) {
     log("keysender spawn failed:", e.message);
     ks = null;
